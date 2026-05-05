@@ -822,6 +822,14 @@ a { color: inherit; text-decoration: none; }
 }
 .option:disabled { cursor: default; }
 
+/* SELECTED — chosen but not yet checked */
+.option.selected.maths { border-color: var(--c-maths); background: rgba(24, 95, 165, 0.04); border-width: 1.5px; }
+.option.selected.english { border-color: var(--c-english); background: rgba(153, 53, 86, 0.04); border-width: 1.5px; }
+.option.selected.reading { border-color: var(--c-reading); background: rgba(15, 110, 86, 0.04); border-width: 1.5px; }
+.option.selected .option-marker.maths-mark { background: var(--c-maths); color: white; }
+.option.selected .option-marker.english-mark { background: var(--c-english); color: white; }
+.option.selected .option-marker.reading-mark { background: var(--c-reading); color: white; }
+
 .option-marker {
   width: 26px;
   height: 26px;
@@ -834,6 +842,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 500;
   flex-shrink: 0;
   margin-top: 1px;
+  transition: background 0.18s var(--ease-out), color 0.18s var(--ease-out);
 }
 
 .option-text {
@@ -844,23 +853,58 @@ a { color: inherit; text-decoration: none; }
   flex: 1;
 }
 
+/* CORRECT — after check, this is the right answer */
 .option.correct {
   border-color: var(--c-reading);
-  background: rgba(15, 110, 86, 0.05);
+  background: rgba(15, 110, 86, 0.10);
+  border-width: 2px;
+  box-shadow: 0 0 0 3px rgba(15, 110, 86, 0.10);
 }
 .option.correct .option-marker {
   background: var(--c-reading);
   color: white;
 }
+.option.correct .option-marker .letter { display: none; }
+.option.correct .option-marker::after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background: white;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") center/contain no-repeat;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") center/contain no-repeat;
+}
+.option.correct .option-text {
+  font-weight: 500;
+  color: var(--text);
+}
 
+/* INCORRECT — after check, this was the user's wrong choice */
 .option.incorrect {
   border-color: var(--c-english);
-  background: rgba(153, 53, 86, 0.05);
+  background: rgba(153, 53, 86, 0.10);
+  border-width: 2px;
+  box-shadow: 0 0 0 3px rgba(153, 53, 86, 0.10);
 }
 .option.incorrect .option-marker {
   background: var(--c-english);
   color: white;
 }
+.option.incorrect .option-marker .letter { display: none; }
+.option.incorrect .option-marker::after {
+  content: '';
+  width: 11px;
+  height: 11px;
+  background: white;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='6' x2='6' y2='18'/><line x1='6' y1='6' x2='18' y2='18'/></svg>") center/contain no-repeat;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='6' x2='6' y2='18'/><line x1='6' y1='6' x2='18' y2='18'/></svg>") center/contain no-repeat;
+}
+.option.incorrect .option-text {
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* Dim non-selected options after check */
+.option.dimmed { opacity: 0.55; }
 
 .hint-row {
   margin-bottom: 24px;
@@ -904,17 +948,51 @@ a { color: inherit; text-decoration: none; }
 .feedback {
   margin-top: 0;
   margin-bottom: 24px;
-  padding: 18px 20px;
-  border-radius: 10px;
+  padding: 0;
+  border-radius: 12px;
   background: var(--surface);
   border: 0.5px solid var(--line);
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--text);
+  overflow: hidden;
   display: none;
+  animation: feedback-in 0.32s var(--ease-out);
 }
 .feedback.show { display: block; }
 .feedback strong { font-weight: 500; }
+
+@keyframes feedback-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.feedback-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: white;
+}
+.feedback-banner.correct { background: var(--c-reading); }
+.feedback-banner.incorrect { background: var(--c-english); }
+.feedback-banner-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.feedback-banner-icon svg { width: 13px; height: 13px; stroke-width: 2.6; }
+
+.feedback-body {
+  padding: 16px 20px 18px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+}
 
 .quiz-bottom {
   display: flex;
@@ -8402,7 +8480,7 @@ function renderQuiz() {
       <div class="options-grid" id="options-grid">
         ${q.options.map((opt, i) => `
           <button class="option" data-index="${i}">
-            <span class="option-marker">${String.fromCharCode(65 + i)}</span>
+            <span class="option-marker"><span class="letter">${String.fromCharCode(65 + i)}</span></span>
             <span class="option-text">${escapeHTML(opt)}</span>
           </button>
         `).join('')}
@@ -8419,9 +8497,9 @@ function renderQuiz() {
       <div class="feedback" id="feedback"></div>
 
       <div class="quiz-bottom">
-        <span class="enter-hint">Press Enter to continue</span>
-        <button class="next-btn ${subject}" id="next-btn" disabled>
-          ${idx + 1 === total ? 'Finish' : 'Next'}
+        <span class="enter-hint" id="enter-hint">Pick an answer to check</span>
+        <button class="next-btn ${subject}" id="next-btn" disabled data-mode="check">
+          <span class="btn-label">Check answer</span>
           ${SVG_ARROW}
         </button>
       </div>
@@ -8433,7 +8511,11 @@ function renderQuiz() {
     btn.addEventListener('click', () => selectOption(parseInt(btn.dataset.index, 10)));
   });
   document.getElementById('hint-toggle').addEventListener('click', toggleHint);
-  document.getElementById('next-btn').addEventListener('click', nextQuestion);
+  document.getElementById('next-btn').addEventListener('click', () => {
+    const nb = document.getElementById('next-btn');
+    if (nb.dataset.mode === 'check') checkAnswer();
+    else nextQuestion();
+  });
   document.getElementById('exit-link').addEventListener('click', e => {
     e.preventDefault();
     openExitModal();
@@ -8447,7 +8529,19 @@ function renderQuiz() {
     }
   };
 
+  // Reset state for the new question
+  state.pendingChoice = null;
   state.questionStartedAt = Date.now();
+
+  // Explicitly reset the next button to "check" mode (since we're a fresh question)
+  const nbReset = document.getElementById('next-btn');
+  if (nbReset) {
+    nbReset.dataset.mode = 'check';
+    nbReset.disabled = true;
+    const lbl = nbReset.querySelector ? nbReset.querySelector('.btn-label') : null;
+    if (lbl) lbl.textContent = 'Check answer';
+  }
+
   startTimer();
   showView('quiz');
 }
@@ -8554,18 +8648,56 @@ function toggleHint() {
   if (c) c.classList.toggle('show');
 }
 
-/* ---------- selection / feedback ---------- */
+/* ---------- selection / check / feedback ---------- */
 function selectOption(chosenIndex) {
+  // If feedback is already showing (answer was checked), do nothing — they can't change it
+  const nb = document.getElementById('next-btn');
+  if (nb && nb.dataset.mode === 'next') return;
+
+  const subject = state.subjectDisplay;
+  const view = document.getElementById('view-quiz');
+
+  // Highlight the chosen option, clear others
+  view.querySelectorAll('.option').forEach((btn, i) => {
+    btn.classList.remove('selected', 'maths', 'english', 'reading');
+    const marker = btn.querySelector('.option-marker');
+    if (marker) marker.classList.remove('maths-mark', 'english-mark', 'reading-mark');
+    if (i === chosenIndex) {
+      btn.classList.add('selected', subject);
+      if (marker) marker.classList.add(subject + '-mark');
+    }
+  });
+
+  state.pendingChoice = chosenIndex;
+
+  // Enable the Check button + update its hint
+  if (nb) nb.disabled = false;
+  const hint = document.getElementById('enter-hint');
+  if (hint) hint.textContent = 'Press Enter to check';
+}
+
+function checkAnswer() {
+  if (state.pendingChoice === null || state.pendingChoice === undefined) return;
   const q = state.questions[state.currentIndex];
+  const chosenIndex = state.pendingChoice;
   const correct = chosenIndex === q.correctIndex;
   const elapsed = Math.floor((Date.now() - state.questionStartedAt) / 1000);
 
-  // Disable all options, mark correct/incorrect
+  // Reveal correct/incorrect; dim non-relevant options
   const view = document.getElementById('view-quiz');
   view.querySelectorAll('.option').forEach((btn, i) => {
     btn.disabled = true;
-    if (i === q.correctIndex) btn.classList.add('correct');
-    else if (i === chosenIndex && !correct) btn.classList.add('incorrect');
+    btn.classList.remove('selected', 'maths', 'english', 'reading');
+    const marker = btn.querySelector('.option-marker');
+    if (marker) marker.classList.remove('maths-mark', 'english-mark', 'reading-mark');
+
+    if (i === q.correctIndex) {
+      btn.classList.add('correct');
+    } else if (i === chosenIndex && !correct) {
+      btn.classList.add('incorrect');
+    } else {
+      btn.classList.add('dimmed');
+    }
   });
 
   // Track answer
@@ -8585,15 +8717,34 @@ function selectOption(chosenIndex) {
     }
   });
 
-  // Show feedback (the explanation)
+  // Build feedback panel: banner + explanation body
   const feedback = document.getElementById('feedback');
-  if (q.explain && feedback) {
-    feedback.innerHTML = q.explain;
+  if (feedback) {
+    const bannerClass = correct ? 'correct' : 'incorrect';
+    const bannerText = correct ? "That's right." : "Not quite.";
+    const bannerIcon = correct
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    feedback.innerHTML = `
+      <div class="feedback-banner ${bannerClass}">
+        <span class="feedback-banner-icon">${bannerIcon}</span>
+        <span>${bannerText}</span>
+      </div>
+      ${q.explain ? `<div class="feedback-body">${q.explain}</div>` : ''}
+    `;
     feedback.classList.add('show');
   }
 
-  // Enable next button
-  document.getElementById('next-btn').disabled = false;
+  // Switch the button: Check → Next/Finish
+  const nb = document.getElementById('next-btn');
+  if (nb) {
+    nb.dataset.mode = 'next';
+    const isLast = state.currentIndex + 1 === state.questions.length;
+    const label = nb.querySelector('.btn-label');
+    if (label) label.textContent = isLast ? 'Finish' : 'Next';
+  }
+  const hint = document.getElementById('enter-hint');
+  if (hint) hint.textContent = 'Press Enter to continue';
 
   // Stop timer
   if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
