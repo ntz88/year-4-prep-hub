@@ -587,10 +587,52 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
   transition: max-height 0.4s var(--ease-out);
 }
-.covered.open .covered-body { max-height: 600px; }
+.covered.open .covered-body { max-height: 1200px; }
 
 .covered-body-inner {
-  padding: 0 24px 24px;
+  padding: 4px 24px 24px;
+}
+
+.covered-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0 14px;
+  border-bottom: 0.5px solid var(--line-soft);
+  margin-bottom: 14px;
+}
+
+.covered-controls-left {
+  font-size: 12.5px;
+  color: var(--text-2);
+  font-weight: 500;
+}
+.covered-controls-left strong {
+  color: var(--text);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.covered-controls-right {
+  display: flex;
+  gap: 6px;
+}
+
+.chip-control {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 0.5px solid var(--line);
+  color: var(--text-2);
+  transition: all 0.15s var(--ease-out);
+  letter-spacing: -0.005em;
+}
+.chip-control:hover { color: var(--text); background: var(--line-soft); }
+
+.topic-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -598,12 +640,202 @@ a { color: inherit; text-decoration: none; }
 
 .topic-chip {
   font-size: 12.5px;
-  padding: 5px 11px;
+  padding: 6px 11px;
   border-radius: 999px;
   background: var(--line-soft);
-  color: var(--text);
+  color: var(--text-2);
   font-weight: 400;
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s var(--ease-out);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: -0.005em;
 }
+.topic-chip:hover { background: var(--surface); border-color: var(--text-3); color: var(--text); }
+
+.topic-chip .chip-count {
+  font-size: 11px;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+  background: var(--surface);
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+/* Active state — picks up subject colour */
+.topic-chip.active {
+  color: white;
+  font-weight: 500;
+}
+.topic-chip.active .chip-count {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.18);
+}
+.topic-chip.active.maths { background: var(--c-maths); border-color: var(--c-maths); }
+.topic-chip.active.english { background: var(--c-english); border-color: var(--c-english); }
+.topic-chip.active.reading { background: var(--c-reading); border-color: var(--c-reading); }
+
+/* Disabled topic-chip (zero items) */
+.topic-chip.empty {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.covered-summary-active.maths { color: var(--c-maths); }
+.covered-summary-active.english { color: var(--c-english); }
+.covered-summary-active.reading { color: var(--c-reading); }
+
+/* ============================================================
+   TOPIC GROUPS (accordion)
+   ============================================================ */
+.topic-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.topic-group {
+  border: 0.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  overflow: hidden;
+  transition: border-color 0.18s var(--ease-out);
+}
+.topic-group:hover:not(.disabled) { border-color: var(--text-3); }
+
+.topic-group-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  font-family: inherit;
+}
+.topic-group-header:hover { background: var(--line-soft); }
+
+/* Tristate group checkbox */
+.group-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid var(--text-3);
+  background: var(--surface);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.15s var(--ease-out);
+  position: relative;
+}
+.group-check:hover { border-color: var(--text); }
+.group-check svg { width: 12px; height: 12px; opacity: 0; transition: opacity 0.15s var(--ease-out); }
+
+/* All children selected */
+.topic-group.all .group-check { border-color: transparent; }
+.topic-group.all.maths .group-check { background: var(--c-maths); }
+.topic-group.all.english .group-check { background: var(--c-english); }
+.topic-group.all.reading .group-check { background: var(--c-reading); }
+.topic-group.all .group-check svg { opacity: 1; }
+.topic-group.all .group-check svg path { stroke: white; }
+
+/* Some children selected (indeterminate) */
+.topic-group.partial .group-check { border-color: transparent; }
+.topic-group.partial.maths .group-check { background: var(--c-maths); }
+.topic-group.partial.english .group-check { background: var(--c-english); }
+.topic-group.partial.reading .group-check { background: var(--c-reading); }
+.topic-group.partial .group-check::after {
+  content: '';
+  width: 10px;
+  height: 2px;
+  background: white;
+  border-radius: 1px;
+  position: absolute;
+}
+
+.topic-group-info { flex: 1; min-width: 0; }
+.topic-group-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+}
+.topic-group-meta {
+  font-size: 12px;
+  color: var(--text-3);
+  font-weight: 400;
+  margin-top: 1px;
+  font-variant-numeric: tabular-nums;
+}
+.topic-group-meta .sub-count.maths { color: var(--c-maths); font-weight: 500; }
+.topic-group-meta .sub-count.english { color: var(--c-english); font-weight: 500; }
+.topic-group-meta .sub-count.reading { color: var(--c-reading); font-weight: 500; }
+
+.topic-group-toggle {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  color: var(--text-3);
+  flex-shrink: 0;
+  transition: transform 0.25s var(--ease-out), color 0.15s var(--ease-out);
+}
+.topic-group-toggle svg { width: 12px; height: 12px; stroke-width: 2.2; }
+.topic-group.open .topic-group-toggle { transform: rotate(180deg); color: var(--text); }
+
+.topic-group-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.32s var(--ease-out);
+}
+.topic-group.open .topic-group-body { max-height: 600px; }
+
+.topic-group-body-inner {
+  padding: 4px 14px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Inside groups, chips lose their count badge for cleanliness */
+.topic-group-body-inner .topic-chip {
+  font-size: 12.5px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+.topic-group-body-inner .topic-chip:hover { background: var(--surface); border-color: var(--text-3); }
+
+/* Bottom summary line */
+.filter-bottom-summary {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 0.5px solid var(--line-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+.filter-bottom-summary .pool-count { color: var(--text); font-weight: 500; }
+.filter-bottom-summary .pool-count.maths { color: var(--c-maths); }
+.filter-bottom-summary .pool-count.english { color: var(--c-english); }
+.filter-bottom-summary .pool-count.reading { color: var(--c-reading); }
+.filter-bottom-summary .warning {
+  color: var(--c-english);
+  font-weight: 500;
+}
+
 
 /* ============================================================
    SUBJECT PAGE — TIP CARD
@@ -7971,8 +8203,22 @@ function timeBudgetFor(question) {
 function generateMathQuestions() {
   const total = QUIZ_LENGTHS.math;
   const questions = [];
-  // Use shuffled generators, cycling through to ensure topic variety
-  const gens = shuffle([...mathGenerators]);
+
+  // Get active topics; if none selected, fall back to all
+  const activeIds = getActiveTopicIds('maths');
+  let activeGens = [];
+  for (const t of SUBJECT_META.maths.topics) {
+    if (!activeIds.has(t.id)) continue;
+    for (const genName of (t.gens || [])) {
+      const fn = mathGenerators.find(g => g.name === genName);
+      if (fn && !activeGens.includes(fn)) activeGens.push(fn);
+    }
+  }
+  // Safety: if activeGens is empty (e.g. all deselected), fall back to all
+  if (activeGens.length === 0) activeGens = [...mathGenerators];
+
+  // Shuffle, then cycle to fill the exam
+  const gens = shuffle([...activeGens]);
   for (let i = 0; i < total; i++) {
     const gen = gens[i % gens.length];
     questions.push({ ...gen(), kind: "mc" });
@@ -7982,60 +8228,127 @@ function generateMathQuestions() {
 
 function generateEnglishQuestions() {
   const total = QUIZ_LENGTHS.english;
-  // Build groups: each cloze passage = one group; each grammar Q = its own group
   const groups = [];
 
-  const clozeCount = Math.min(6, total - 4);
-  const passages = shuffle([...englishClozePool]).slice(0, Math.ceil(clozeCount / 3));
+  // Determine active topics and which content sources are allowed
+  const activeIds = getActiveTopicIds('english');
+  const activeTopics = SUBJECT_META.english.topics.filter(t => activeIds.has(t.id));
+  const includeCloze = activeTopics.some(t => t.match && t.match.type === 'cloze');
+
+  // Build a filtered grammar pool: a Q is included if it matches ANY active topic that has keyword rules
+  const keywordTopics = activeTopics.filter(t => t.match && t.match.keywords);
+  let filteredGrammar;
+  if (keywordTopics.length === 0 && !includeCloze) {
+    // Nothing selected or only cloze deselected - empty filter, fall back to everything
+    filteredGrammar = [...englishGrammarPool];
+  } else if (keywordTopics.length === 0) {
+    // Only cloze selected: no grammar
+    filteredGrammar = [];
+  } else {
+    filteredGrammar = englishGrammarPool.filter(g =>
+      keywordTopics.some(t => englishGrammarMatchesTopic(g, t))
+    );
+  }
+
+  // If filteredGrammar is empty AND cloze isn't included, fall back to all
+  if (filteredGrammar.length === 0 && !includeCloze) {
+    filteredGrammar = [...englishGrammarPool];
+  }
+
+  // Decide cloze count based on whether cloze is included
+  let clozeCount;
+  if (includeCloze && filteredGrammar.length > 0) {
+    clozeCount = Math.min(6, total - 4);
+  } else if (includeCloze && filteredGrammar.length === 0) {
+    clozeCount = total; // all cloze
+  } else {
+    clozeCount = 0;
+  }
+
+  // Add cloze questions
   let added = 0;
-  for (const p of passages) {
-    const group = [];
-    for (let bi = 0; bi < p.blanks.length && added < clozeCount; bi++) {
-      const b = p.blanks[bi];
-      const opts = shuffle([...b.options]);
-      group.push({
-        kind: "cloze",
-        passageTitle: p.title,
-        passage: p.template,
-        blankNumber: bi + 1,
-        topic: "Cloze · vocabulary in context",
-        text: `Choose the best word for blank (${bi + 1}):`,
-        options: opts,
-        correctIndex: opts.indexOf(b.correct),
-        hint: b.hint,
-        explain: `The best fit is <strong>${b.correct}</strong>. ${b.hint}`,
-        _isFirstOnPassage: bi === 0
-      });
-      added++;
+  if (clozeCount > 0) {
+    const passages = shuffle([...englishClozePool]).slice(0, Math.ceil(clozeCount / 3));
+    for (const p of passages) {
+      const group = [];
+      for (let bi = 0; bi < p.blanks.length && added < clozeCount; bi++) {
+        const b = p.blanks[bi];
+        const opts = shuffle([...b.options]);
+        group.push({
+          kind: "cloze",
+          passageTitle: p.title,
+          passage: p.template,
+          blankNumber: bi + 1,
+          topic: "Cloze · vocabulary in context",
+          text: `Choose the best word for blank (${bi + 1}):`,
+          options: opts,
+          correctIndex: opts.indexOf(b.correct),
+          hint: b.hint,
+          explain: `The best fit is <strong>${b.correct}</strong>. ${b.hint}`,
+          _isFirstOnPassage: bi === 0
+        });
+        added++;
+      }
+      if (group.length > 0) groups.push(group);
     }
-    if (group.length > 0) groups.push(group);
   }
 
+  // Add grammar Qs to fill the rest, cycling through filteredGrammar to handle small filter pools
   const grammarCount = total - added;
-  const grammar = shuffle([...englishGrammarPool]).slice(0, grammarCount);
-  for (const g of grammar) {
-    groups.push([{
-      kind: "mc",
-      topic: "Grammar / spelling",
-      text: g.text,
-      options: g.options,
-      correctIndex: g.correct,
-      hint: g.hint,
-      explain: g.explain
-    }]);
+  if (grammarCount > 0) {
+    const pool = shuffle([...filteredGrammar]);
+    for (let i = 0; i < grammarCount; i++) {
+      const g = pool[i % pool.length];
+      groups.push([{
+        kind: "mc",
+        topic: "Grammar / spelling",
+        text: g.text,
+        options: g.options,
+        correctIndex: g.correct,
+        hint: g.hint,
+        explain: g.explain
+      }]);
+    }
   }
 
-  // Shuffle the groups, then flatten — keeps cloze blanks together within their passage
   return shuffle(groups).flat();
 }
 
 function generateReadingQuestions() {
   const total = QUIZ_LENGTHS.reading;
   const questions = [];
-  // Pick passages and use their bundled questions
-  const shuffled = shuffle([...readingPool]);
-  for (const p of shuffled) {
-    if (questions.length >= total) break;
+
+  // Get active topics
+  const activeIds = getActiveTopicIds('reading');
+  const activeTopics = SUBJECT_META.reading.topics.filter(t => activeIds.has(t.id));
+
+  // Build filtered passage list: keep a passage if EITHER:
+  //   - The passage matches a passageContains topic, OR
+  //   - At least one of its questions matches a keyword topic
+  const passageTopics = activeTopics.filter(t => t.match && t.match.passageContains);
+  const keywordTopics = activeTopics.filter(t => t.match && t.match.keywords);
+
+  let filteredPassages = readingPool.filter(p => {
+    // Passage-level match?
+    if (passageTopics.some(t => readingMatchesTopic(p, p.questions[0] || {}, t))) return true;
+    // Or any of its questions match keyword topics?
+    if (keywordTopics.length > 0) {
+      for (const q of (p.questions || [])) {
+        if (keywordTopics.some(t => readingMatchesTopic(p, q, t))) return true;
+      }
+    }
+    return false;
+  });
+
+  // Fallback if filter produced nothing
+  if (filteredPassages.length === 0) filteredPassages = [...readingPool];
+
+  // Build the exam, cycling through passages if pool is small
+  const shuffled = shuffle([...filteredPassages]);
+  let passageIdx = 0;
+  let safety = 0;
+  while (questions.length < total && safety < 200) {
+    const p = shuffled[passageIdx % shuffled.length];
     let isFirst = true;
     for (const q of p.questions) {
       if (questions.length >= total) break;
@@ -8052,6 +8365,8 @@ function generateReadingQuestions() {
       });
       isFirst = false;
     }
+    passageIdx++;
+    safety++;
   }
   return questions;
 }
@@ -8145,43 +8460,44 @@ const SUBJECT_META = {
     questionCount: 22,
     color: '#185FA5',
     tip: "Read every question twice — most GL traps catch quick readers, not bad mathematicians.",
+    // Each topic maps to one or more generator function names
     topics: [
-      "Place value",
-      "Addition (3-digit)",
-      "Subtraction",
-      "Multiplication (2-digit × 1-digit)",
-      "Times tables",
-      "Division",
-      "Division with remainder",
-      "Function machines",
-      "Reverse machines",
-      "Halfway between",
-      "Counting in steps",
-      "Factors",
-      "Fractions of quantities",
-      "Adding fractions",
-      "Subtracting fractions",
-      "Equivalent fractions",
-      "Decimals (tenths & hundredths)",
-      "Comparing decimals",
-      "Negative numbers",
-      "Rounding",
-      "Roman numerals",
-      "Money",
-      "Counting coins",
-      "Word problems",
-      "Time problems",
-      "Analog & digital clocks",
-      "24-hour time",
-      "Unit conversion (mm/cm/m, g/kg, ml/l)",
-      "Perimeter",
-      "Area",
-      "Triangle types",
-      "Angles",
-      "Symmetry",
-      "Coordinates",
-      "Bar charts",
-      "Pictograms"
+      { id: 'place-value',    label: 'Place value',                           gens: ['placeValueColumn'] },
+      { id: 'addition',       label: '3-digit addition',                      gens: ['threeDigitAddition'] },
+      { id: 'subtraction',    label: 'Mental subtraction',                    gens: ['mentalSubtraction'] },
+      { id: 'multiplication', label: '2-digit × 1-digit',                     gens: ['twoDigitMultiplication'] },
+      { id: 'times-tables',   label: 'Times tables',                          gens: ['multiplicationProblem'] },
+      { id: 'division',       label: 'Division',                              gens: ['divisionProblem', 'divisionRemainder'] },
+      { id: 'function-machines', label: 'Function machines',                  gens: ['functionMachine', 'reverseFunctionMachine'] },
+      { id: 'halfway',        label: 'Halfway between',                       gens: ['halfwayWhole', 'halfwayDecimal', 'halfwayFraction'] },
+      { id: 'counting-steps', label: 'Counting in steps',                     gens: ['countingSteps'] },
+      { id: 'factors',        label: 'Factors',                               gens: ['factorsOfNum'] },
+      { id: 'fractions-of',   label: 'Fractions of quantities',               gens: ['fractionsOfQuantity'] },
+      { id: 'add-sub-frac',   label: 'Adding & subtracting fractions',        gens: ['addFractionsSameDenom', 'subtractFractionsSameDenom'] },
+      { id: 'equiv-fractions', label: 'Equivalent fractions',                 gens: ['fractionEquivalence'] },
+      { id: 'decimals',       label: 'Decimals (tenths & hundredths)',        gens: ['fractionToDecimal'] },
+      { id: 'compare-decimals', label: 'Comparing decimals',                  gens: ['compareDecimals'] },
+      { id: 'negatives',      label: 'Negative numbers',                      gens: ['negativeNumbers'] },
+      { id: 'rounding',       label: 'Rounding',                              gens: ['rounding'] },
+      { id: 'roman',          label: 'Roman numerals',                        gens: ['romanNumerals'] },
+      { id: 'money',          label: 'Money',                                 gens: ['coinsTotal', 'coinsCount', 'wordProblemMoney'] },
+      { id: 'time-words',     label: 'Time word problems',                    gens: ['timeProblem'] },
+      { id: 'clocks',         label: 'Analog & digital clocks',               gens: ['analogClock'] },
+      { id: '24-hour',        label: '24-hour time',                          gens: ['timeFormat24Hour'] },
+      { id: 'units',          label: 'Unit conversion',                       gens: ['unitConversion'] },
+      { id: 'perimeter-area', label: 'Perimeter & area',                      gens: ['perimeterProblem', 'areaProblem'] },
+      { id: 'triangles',      label: 'Triangle types',                        gens: ['triangleTypes'] },
+      { id: 'angles',         label: 'Angles',                                gens: ['angleTypes'] },
+      { id: 'symmetry',       label: 'Symmetry',                              gens: ['symmetry'] },
+      { id: 'coordinates',    label: 'Coordinates',                           gens: ['coordinates'] },
+      { id: 'charts',         label: 'Charts & pictograms',                   gens: ['barChartReading', 'pictograms'] }
+    ],
+    topicGroups: [
+      { id: 'number',      label: 'Number',                  topicIds: ['place-value', 'rounding', 'negatives', 'counting-steps', 'roman', 'halfway', 'factors'] },
+      { id: 'calculation', label: 'Calculation',             topicIds: ['addition', 'subtraction', 'multiplication', 'times-tables', 'division', 'function-machines'] },
+      { id: 'fractions',   label: 'Fractions & decimals',    topicIds: ['fractions-of', 'add-sub-frac', 'equiv-fractions', 'decimals', 'compare-decimals'] },
+      { id: 'measure',     label: 'Money, time & measure',   topicIds: ['money', 'time-words', 'clocks', '24-hour', 'units'] },
+      { id: 'shape-data',  label: 'Shape & data',            topicIds: ['perimeter-area', 'triangles', 'angles', 'symmetry', 'coordinates', 'charts'] }
     ]
   },
   english: {
@@ -8193,31 +8509,37 @@ const SUBJECT_META = {
     questionCount: 20,
     color: '#993556',
     tip: "For cloze questions, read the whole sentence with each option in place — the right word will sound natural.",
+    // English topics map to filtering rules (cloze = include cloze pool; others use keyword match against grammar Q text)
     topics: [
-      "Cloze passages",
-      "Sentence completion",
-      "Word ordering",
-      "Error identification",
-      "Vocabulary definitions",
-      "Verb tense matching",
-      "Active vs passive voice",
-      "Fronted adverbials",
-      "Word classes",
-      "Apostrophes",
-      "Spelling rules",
-      "Subject identification",
-      "Speech marks",
-      "Conjunctions",
-      "Irregular plurals",
-      "Past tense irregulars",
-      "Synonyms & antonyms",
-      "Prefixes & suffixes",
-      "Relative clauses",
-      "Homophones",
-      "Sentence types",
-      "Modal verbs",
-      "Shades of meaning",
-      "Proofreading"
+      { id: 'cloze',          label: 'Cloze passages',          match: { type: 'cloze' } },
+      { id: 'homophones',     label: 'Homophones',              match: { keywords: ['homophone', 'their', "they're", "you're", 'your', 'its', "it's", 'weather', 'whether', 'write', 'right', 'hear', 'their/there'] } },
+      { id: 'apostrophes',    label: 'Apostrophes',             match: { keywords: ['apostrophe', "didn't", "don't", "it's"] } },
+      { id: 'spelling',       label: 'Spelling',                match: { keywords: ['spelling error', 'spelled', 'spelt', 'CORRECT spelling', 'correctly spelled', 'misspelled'] } },
+      { id: 'word-classes',   label: 'Word classes',            match: { keywords: ['noun', 'verb', 'adjective', 'adverb', 'word class', 'preposition', 'pronoun'] } },
+      { id: 'punctuation',    label: 'Punctuation',             match: { keywords: ['comma', 'punctuation', 'colon', 'semicolon', 'capital', 'speech mark', 'direct speech', 'exclamation'] } },
+      { id: 'sentence-types', label: 'Sentence types',          match: { keywords: ['statement', 'question', 'command', 'exclamation', 'imperative', 'sentence types'] } },
+      { id: 'verb-tense',     label: 'Verb tense',              match: { keywords: ['past tense', 'present tense', 'future tense', 'verb form', 'tense', 'irregular past'] } },
+      { id: 'active-passive', label: 'Active vs passive',       match: { keywords: ['active voice', 'passive voice', 'active', 'passive'] } },
+      { id: 'vocab-defs',     label: 'Vocabulary definitions',  match: { keywords: ['What does the word', 'mean', 'definition', 'synonym', 'antonym', 'odd-one-out', 'NOT belong'] } },
+      { id: 'shades',         label: 'Shades of meaning',       match: { keywords: ['STRONGEST', 'WEAKEST', 'shades', 'order these'] } },
+      { id: 'prefixes-suffixes', label: 'Prefixes & suffixes',  match: { keywords: ['prefix', 'suffix', "'mis-'", "'pre-'", "'sub-'", "'un-'", "'-ment'", "'-able'", "'-er'", 'root', 'aqua', 'tele-', 'bi-', 'super-'] } },
+      { id: 'plurals',        label: 'Plurals',                 match: { keywords: ['plural', 'plurals'] } },
+      { id: 'sentence-completion', label: 'Sentence completion', match: { keywords: ['Choose the BEST word to complete', 'best fits', 'BEST word'] } },
+      { id: 'word-ordering',  label: 'Word ordering',           match: { keywords: ['Put these words in', 'order to make', 'in the correct order'] } },
+      { id: 'error-id',       label: 'Error identification',    match: { keywords: ['Find the ERROR', 'has a SPELLING error', 'has a PUNCTUATION error', 'has a CAPITAL', 'has a GRAMMAR error', 'WRITTEN CORRECTLY', 'CORRECT punctuation'] } },
+      { id: 'word-roots',     label: 'Similes & metaphors',     match: { keywords: ['simile', 'metaphor', 'personification'] } },
+      { id: 'subject-id',     label: 'Subject identification',  match: { keywords: ['SUBJECT of this sentence', 'subject is'] } },
+      { id: 'conjunctions',   label: 'Conjunctions',            match: { keywords: ['conjunction', 'FANBOYS'] } },
+      { id: 'relative-clauses', label: 'Relative clauses',      match: { keywords: ['relative clause'] } },
+      { id: 'fronted',        label: 'Fronted adverbials',      match: { keywords: ['fronted adverbial'] } },
+      { id: 'comparatives',   label: 'Comparatives',            match: { keywords: ['comparative', 'easier', 'more easier'] } }
+    ],
+    topicGroups: [
+      { id: 'cloze-passages', label: 'Cloze & passages',         topicIds: ['cloze'] },
+      { id: 'vocabulary',     label: 'Vocabulary',               topicIds: ['vocab-defs', 'shades', 'sentence-completion', 'word-roots'] },
+      { id: 'grammar',        label: 'Grammar & word classes',   topicIds: ['word-classes', 'verb-tense', 'active-passive', 'subject-id', 'conjunctions', 'relative-clauses', 'fronted', 'comparatives', 'plurals'] },
+      { id: 'spelling-punct', label: 'Spelling & punctuation',   topicIds: ['spelling', 'punctuation', 'apostrophes', 'homophones', 'sentence-types'] },
+      { id: 'editing',        label: 'Editing & word play',      topicIds: ['word-ordering', 'error-id', 'prefixes-suffixes'] }
     ]
   },
   reading: {
@@ -8229,33 +8551,57 @@ const SUBJECT_META = {
     questionCount: 16,
     color: '#0F6E56',
     tip: "Read the passage twice before looking at questions — the second read catches details you missed.",
+    // Reading topics — auto-detected from question text patterns within each passage
     topics: [
-      "Direct retrieval",
-      "Inference",
-      "Character feelings",
-      "Identifying similes",
-      "Personification",
-      "Vocabulary in context",
-      "Author's purpose",
-      "Word choice analysis",
-      "Atmosphere & mood",
-      "Prediction",
-      "Summarising passages",
-      "Fact vs. opinion",
-      "Genre identification",
-      "Contrast",
-      "Sequencing events",
-      "True / False / Not Stated",
-      "Comparing two texts",
-      "Audience identification",
-      "Tone identification",
-      "Instructional / procedural texts",
-      "Persuasive texts",
-      "Non-fiction (science, history, animals)",
-      "Poetry analysis",
-      "Diary entries",
-      "Formal letters",
-      "News reports"
+      { id: 'inference',      label: 'Inference & character feelings',
+        match: { keywords: ['how does', 'how do', 'what does', 'feeling', 'feel', 'really happening', 'character', "Why does the", 'thinking', 'suggests', 'suggest'] } },
+      { id: 'direct',         label: 'Direct retrieval',
+        match: { keywords: ['according to', 'what is', 'how many', 'where', 'who'] } },
+      { id: 'vocab-context',  label: 'Vocabulary in context',
+        match: { keywords: ['Find a word', 'word in the passage', 'mean in this', 'meaning of', 'what does', 'context'] } },
+      { id: 'true-false',     label: 'True / False / Not Stated',
+        match: { keywords: ['TRUE, FALSE', 'TRUE or FALSE', 'choose: TRUE'] } },
+      { id: 'fact-opinion',   label: 'Fact vs opinion',
+        match: { keywords: ['FACT', 'OPINION', 'WRITER\'S OPINION', "AUTHOR'S OPINION"] } },
+      { id: 'sequencing',     label: 'Sequencing events',
+        match: { keywords: ['order they happened', 'happened FIRST', 'happened LAST', 'order:', 'in order'] } },
+      { id: 'similes',        label: 'Similes & metaphors',
+        match: { keywords: ['simile', 'metaphor', 'personification', "as if", "like a"] } },
+      { id: 'mood',           label: 'Mood, tone & atmosphere',
+        match: { keywords: ['MOOD', 'TONE', 'atmosphere', 'feeling does', 'feel'] } },
+      { id: 'authors-purpose', label: "Author's purpose & technique",
+        match: { keywords: ['author', 'writer', 'main purpose', 'main idea', 'main message', 'why does the author', 'why does the writer', 'why does the poet', 'technique', 'choose this'] } },
+      { id: 'summary',        label: 'Summarising passages',
+        match: { keywords: ['summarise', 'summary', 'BEST summarises', 'main idea'] } },
+      { id: 'audience',       label: 'Audience identification',
+        match: { keywords: ['AUDIENCE', 'who is this written', 'who is being addressed'] } },
+      { id: 'compare-texts',  label: 'Comparing two texts',
+        match: { passageContains: ['TEXT A:', 'Text A', 'BIG difference between Text A and Text B'] } },
+      { id: 'instructional',  label: 'Instructional / procedural',
+        match: { passageContains: ['How to', '1.', 'numbered list', 'instructional'] } },
+      { id: 'persuasive',     label: 'Persuasive texts',
+        match: { passageContains: ['Buy', 'Save', 'Dear neighbours', 'Please sign', 'persuade', 'SuperShine', 'advertisement'] } },
+      { id: 'poetry',         label: 'Poetry',
+        match: { passageContains: ['\n\n', 'poet', 'Poem', "Lullaby", "Sky-Talk", "Old Man Winter"] } },
+      { id: 'fables',         label: 'Fables & folk tales',
+        match: { passageContains: ['hare', 'tortoise', 'crow', 'fable', 'moral', 'Long ago', 'Once,'] } },
+      { id: 'non-fiction',    label: 'Non-fiction (science, animals, history)',
+        match: { passageContains: ['Honeybees', 'Penguins', 'Coral reefs', 'Mountains', 'Octopuses', 'Spiders', 'Bats', 'Volcanoes', 'electricity', 'atmosphere', 'Egypt', 'Anne Frank', 'recycling', 'Sleep', 'Marathons', 'Bicycles', 'Tea', 'wolves', 'are some of', 'are one of', 'There are', 'over a thousand'] } },
+      { id: 'character',      label: 'Character studies',
+        match: { passageContains: ['Tariq', 'Yara', 'Beatrice', 'Aisha', 'Mira', 'Sasha', 'Maria', 'Liam', 'Sara', 'Owen'] } },
+      { id: 'mystery',        label: 'Mystery & suspense',
+        match: { passageContains: ['detective', 'suspense', 'scratching', 'mystery', 'treasure', 'detective stood'] } },
+      { id: 'diary-letters',  label: 'Diary entries & letters',
+        match: { passageContains: ['Dear Diary', 'Dear Mr', 'Dear neighbour', 'Sincerely', 'Friday\n\n', 'March 15', 'Dear ', 'Yours sincerely'] } },
+      { id: 'news',           label: 'News reports',
+        match: { passageContains: ['RECORD-BREAKING', 'reported', 'journalist', 'told reporters', 'Cornwall beach'] } }
+    ],
+    topicGroups: [
+      { id: 'understanding', label: 'Understanding the text',  topicIds: ['direct', 'inference', 'vocab-context', 'true-false'] },
+      { id: 'craft',         label: "Author's craft",          topicIds: ['mood', 'authors-purpose', 'similes'] },
+      { id: 'structure',     label: 'Structure & summary',     topicIds: ['sequencing', 'summary', 'compare-texts'] },
+      { id: 'thinking',      label: 'Critical thinking',       topicIds: ['fact-opinion', 'audience'] },
+      { id: 'genres',        label: 'Genres & text types',     topicIds: ['poetry', 'fables', 'non-fiction', 'persuasive', 'instructional', 'character', 'mystery', 'diary-letters', 'news'] }
     ]
   }
 };
@@ -8287,6 +8633,118 @@ const SUBJECT_META = {
   SUBJECT_META.english.coveredSummary = `${SUBJECT_META.english.topics.length} skills — cloze, grammar, vocabulary and beyond.`;
   SUBJECT_META.reading.coveredSummary = `${SUBJECT_META.reading.topics.length} skills — inference, summarising, fact vs opinion and more.`;
 })();
+
+/* ---------- topic filter mapping ---------- */
+// Match a single grammar Q against an English topic
+function englishGrammarMatchesTopic(grammarQ, topic) {
+  if (!topic.match) return false;
+  if (topic.match.type === 'cloze') return false; // cloze topics don't match grammar Qs
+  if (!topic.match.keywords) return false;
+  const text = (grammarQ.text || '').toLowerCase();
+  // Also include explanation text for richer matching (since some Qs phrase things in the explain)
+  const explain = (grammarQ.explain || '').toLowerCase();
+  for (const kw of topic.match.keywords) {
+    const k = kw.toLowerCase();
+    if (text.includes(k) || explain.includes(k)) return true;
+  }
+  return false;
+}
+
+// Match a reading question (or its passage) against a Reading topic
+function readingMatchesTopic(passageObj, questionObj, topic) {
+  if (!topic.match) return false;
+  if (topic.match.passageContains) {
+    const p = (passageObj.passage || '').toLowerCase();
+    for (const phrase of topic.match.passageContains) {
+      if (p.includes(phrase.toLowerCase())) return true;
+    }
+    return false;
+  }
+  if (topic.match.keywords) {
+    const text = (questionObj.text || '').toLowerCase();
+    const expl = (questionObj.explain || '').toLowerCase();
+    for (const kw of topic.match.keywords) {
+      const k = kw.toLowerCase();
+      if (text.includes(k) || expl.includes(k)) return true;
+    }
+  }
+  return false;
+}
+
+// Compute how many items each topic has in the bank (for display in chips)
+function computeTopicCounts() {
+  // Maths — count number of generator functions per topic
+  for (const t of SUBJECT_META.maths.topics) {
+    t.count = (t.gens || []).length;
+    t.countLabel = t.count === 1 ? '1 generator' : `${t.count} generators`;
+  }
+  // English — for cloze topic, count cloze blanks; for others, scan grammar pool
+  for (const t of SUBJECT_META.english.topics) {
+    if (t.match && t.match.type === 'cloze') {
+      let blanks = 0;
+      if (typeof englishClozePool !== 'undefined') {
+        for (const p of englishClozePool) blanks += (p.blanks || []).length;
+      }
+      t.count = blanks;
+    } else {
+      let n = 0;
+      if (typeof englishGrammarPool !== 'undefined') {
+        for (const g of englishGrammarPool) {
+          if (englishGrammarMatchesTopic(g, t)) n++;
+        }
+      }
+      t.count = n;
+    }
+  }
+  // Reading — for each topic, count matching passages (or matching question count if keyword-based)
+  for (const t of SUBJECT_META.reading.topics) {
+    let n = 0;
+    if (typeof readingPool !== 'undefined') {
+      if (t.match && t.match.passageContains) {
+        // Count whole passages
+        for (const p of readingPool) {
+          if (readingMatchesTopic(p, p.questions[0] || {}, t)) n++;
+        }
+      } else if (t.match && t.match.keywords) {
+        // Count questions across all passages
+        for (const p of readingPool) {
+          for (const q of (p.questions || [])) {
+            if (readingMatchesTopic(p, q, t)) n++;
+          }
+        }
+      }
+    }
+    t.count = n;
+  }
+}
+computeTopicCounts();
+
+/* ---------- per-subject topic filter (localStorage) ---------- */
+function loadTopicFilter(subject) {
+  const raw = localStorage.getItem(`prephub.${subject}.topicFilter`);
+  if (!raw) return null; // null = "all selected" (default)
+  try {
+    const arr = JSON.parse(raw);
+    return Array.isArray(arr) ? new Set(arr) : null;
+  } catch (e) { return null; }
+}
+function saveTopicFilter(subject, selectedIds) {
+  // selectedIds is a Set of topic.id values
+  const total = SUBJECT_META[subject].topics.length;
+  if (selectedIds.size === total) {
+    // All selected = default; clear the saved filter
+    localStorage.removeItem(`prephub.${subject}.topicFilter`);
+  } else {
+    localStorage.setItem(`prephub.${subject}.topicFilter`, JSON.stringify([...selectedIds]));
+  }
+}
+function getActiveTopicIds(subject) {
+  const stored = loadTopicFilter(subject);
+  if (!stored) return new Set(SUBJECT_META[subject].topics.map(t => t.id));
+  // Filter to ensure stored IDs are still valid (in case topics changed)
+  const validIds = new Set(SUBJECT_META[subject].topics.map(t => t.id));
+  return new Set([...stored].filter(id => validIds.has(id)));
+}
 
 /* ---------- icons ---------- */
 const SVG_ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
@@ -8330,6 +8788,10 @@ function renderSubjectPage(subject) {
   const tallies = loadTallies();
   const t = tallies[subject];
   const tallyText = `${t.correct} / ${t.attempted}`;
+
+  // Compute current filter state
+  let activeIds = getActiveTopicIds(subject);
+  const totalTopics = meta.topics.length;
 
   const view = document.getElementById('view-subject');
   view.innerHTML = `
@@ -8375,17 +8837,63 @@ function renderSubjectPage(subject) {
         </div>
       </section>
 
-      <div class="covered" id="covered-row">
+      <div class="covered open" id="covered-row">
         <button class="covered-header" id="covered-toggle">
           <div class="covered-info">
-            <div class="covered-title">What's covered</div>
-            <div class="covered-summary">${meta.coveredSummary}</div>
+            <div class="covered-title">Topics in this exam</div>
+            <div class="covered-summary" id="covered-summary"></div>
           </div>
           <div class="covered-toggle">${SVG_PLUS}</div>
         </button>
         <div class="covered-body">
           <div class="covered-body-inner">
-            ${(meta.topics || []).map(t => `<span class="topic-chip">${t}</span>`).join('')}
+            <div class="covered-controls">
+              <div class="covered-controls-left" id="filter-counter"></div>
+              <div class="covered-controls-right">
+                <button class="chip-control" id="filter-all">All</button>
+                <button class="chip-control" id="filter-none">None</button>
+              </div>
+            </div>
+
+            <div class="topic-groups" id="topic-groups">
+              ${(meta.topicGroups || []).map(g => {
+                const topicsInGroup = g.topicIds
+                  .map(id => meta.topics.find(t => t.id === id))
+                  .filter(t => t && t.count > 0);
+                const totalGroupItems = topicsInGroup.reduce((s, t) => s + t.count, 0);
+                if (topicsInGroup.length === 0) return '';
+                return `
+                <div class="topic-group" data-group-id="${g.id}">
+                  <button class="topic-group-header" data-action="toggle-open">
+                    <span class="group-check" data-action="toggle-all">
+                      <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                    </span>
+                    <span class="topic-group-info">
+                      <span class="topic-group-name">${escapeHTML(g.label)}</span>
+                      <span class="topic-group-meta"><span class="sub-count ${subject}" data-group-count>${topicsInGroup.length}</span> of ${topicsInGroup.length} selected · ${totalGroupItems} items</span>
+                    </span>
+                    <span class="topic-group-toggle">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </span>
+                  </button>
+                  <div class="topic-group-body">
+                    <div class="topic-group-body-inner">
+                      ${topicsInGroup.map(t => `
+                        <button class="topic-chip" data-topic-id="${t.id}">
+                          <span>${escapeHTML(t.label)}</span>
+                        </button>
+                      `).join('')}
+                    </div>
+                  </div>
+                </div>
+                `;
+              }).join('')}
+            </div>
+
+            <div class="filter-bottom-summary">
+              <span id="filter-pool-line">All topics included</span>
+              <span id="filter-pool-count" class="pool-count ${subject}"></span>
+            </div>
           </div>
         </div>
       </div>
@@ -8397,10 +8905,171 @@ function renderSubjectPage(subject) {
     </main>
   `;
 
+  // Helpers for group state
+  function getGroupTopicsInGroup(g) {
+    return g.topicIds
+      .map(id => meta.topics.find(t => t.id === id))
+      .filter(t => t && t.count > 0);
+  }
+
+  function refreshChips() {
+    activeIds = getActiveTopicIds(subject);
+
+    // Update individual chip active states
+    document.querySelectorAll('.topic-group .topic-chip').forEach(chip => {
+      const id = chip.dataset.topicId;
+      if (activeIds.has(id)) chip.classList.add('active', subject);
+      else chip.classList.remove('active', subject);
+    });
+
+    // Update each group's tristate + count
+    let poolItems = 0;
+    (meta.topicGroups || []).forEach(g => {
+      const groupEl = document.querySelector(`.topic-group[data-group-id="${g.id}"]`);
+      if (!groupEl) return;
+      const topicsInGroup = getGroupTopicsInGroup(g);
+      const selectedInGroup = topicsInGroup.filter(t => activeIds.has(t.id));
+      groupEl.classList.remove('all', 'partial', 'maths', 'english', 'reading');
+      if (selectedInGroup.length === topicsInGroup.length && topicsInGroup.length > 0) {
+        groupEl.classList.add('all', subject);
+      } else if (selectedInGroup.length > 0) {
+        groupEl.classList.add('partial', subject);
+      }
+      const countEl = groupEl.querySelector('[data-group-count]');
+      if (countEl) countEl.textContent = selectedInGroup.length;
+      const meta_el = groupEl.querySelector('.topic-group-meta');
+      if (meta_el) {
+        const items = selectedInGroup.reduce((s, t) => s + t.count, 0);
+        const totalItems = topicsInGroup.reduce((s, t) => s + t.count, 0);
+        meta_el.innerHTML = `<span class="sub-count ${subject}">${selectedInGroup.length}</span> of ${topicsInGroup.length} selected · ${items}/${totalItems} items`;
+      }
+      poolItems += selectedInGroup.reduce((s, t) => s + t.count, 0);
+    });
+
+    // Top counter
+    const counter = document.getElementById('filter-counter');
+    const summary = document.getElementById('covered-summary');
+    if (counter) {
+      if (activeIds.size === totalTopics) {
+        counter.innerHTML = `<strong>${totalTopics}</strong> of ${totalTopics} topics selected`;
+        if (summary) {
+          summary.textContent = `All ${totalTopics} topics included`;
+          summary.classList.remove('covered-summary-active', 'maths', 'english', 'reading');
+        }
+      } else if (activeIds.size === 0) {
+        counter.innerHTML = `<strong>0</strong> of ${totalTopics} topics — pick at least one`;
+        if (summary) {
+          summary.textContent = `Pick at least one topic to start`;
+          summary.classList.remove('covered-summary-active', 'maths', 'english', 'reading');
+        }
+      } else {
+        counter.innerHTML = `<strong>${activeIds.size}</strong> of ${totalTopics} topics selected`;
+        if (summary) {
+          summary.textContent = `${activeIds.size} of ${totalTopics} topics — focused practice`;
+          summary.classList.add('covered-summary-active', subject);
+        }
+      }
+    }
+
+    // Bottom summary
+    const poolLine = document.getElementById('filter-pool-line');
+    const poolCount = document.getElementById('filter-pool-count');
+    if (poolLine && poolCount) {
+      if (activeIds.size === 0) {
+        poolLine.innerHTML = `<span class="warning">No topics selected</span>`;
+        poolCount.textContent = '';
+      } else if (subject === 'maths') {
+        poolLine.textContent = `${activeIds.size === totalTopics ? 'All' : 'Selected'} maths topics will be drawn from`;
+        poolCount.textContent = `${activeIds.size} generators`;
+      } else {
+        poolLine.textContent = `Drawing from selected topics`;
+        poolCount.textContent = `~${poolItems} questions`;
+      }
+    }
+
+    // Start button
+    const startBtn = document.getElementById('start-exam-btn');
+    if (startBtn) {
+      if (activeIds.size === 0) {
+        startBtn.disabled = true;
+        startBtn.style.opacity = '0.45';
+        startBtn.style.cursor = 'not-allowed';
+      } else {
+        startBtn.disabled = false;
+        startBtn.style.opacity = '';
+        startBtn.style.cursor = '';
+      }
+    }
+  }
+
+  refreshChips();
+
+  // Wire interactions
   document.getElementById('subject-back').addEventListener('click', e => { e.preventDefault(); goHome(); });
-  document.getElementById('start-exam-btn').addEventListener('click', () => beginQuiz(subject));
+  document.getElementById('start-exam-btn').addEventListener('click', () => {
+    if (activeIds.size === 0) return;
+    beginQuiz(subject);
+  });
   document.getElementById('covered-toggle').addEventListener('click', () => {
     document.getElementById('covered-row').classList.toggle('open');
+  });
+
+  // Group header click — opens/closes the body
+  document.querySelectorAll('.topic-group-header').forEach(header => {
+    header.addEventListener('click', (e) => {
+      // If they clicked the master checkbox, don't toggle open
+      if (e.target.closest('[data-action="toggle-all"]')) return;
+      const group = header.closest('.topic-group');
+      group.classList.toggle('open');
+    });
+  });
+
+  // Master checkbox click — toggles all topics in the group
+  document.querySelectorAll('.group-check').forEach(check => {
+    check.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const group = check.closest('.topic-group');
+      const groupId = group.dataset.groupId;
+      const groupDef = (meta.topicGroups || []).find(g => g.id === groupId);
+      if (!groupDef) return;
+      const topicsInGroup = getGroupTopicsInGroup(groupDef);
+      const groupTopicIds = topicsInGroup.map(t => t.id);
+      const next = new Set(activeIds);
+      const allSelected = groupTopicIds.every(id => next.has(id));
+      if (allSelected) {
+        // Deselect all in group
+        groupTopicIds.forEach(id => next.delete(id));
+      } else {
+        // Select all in group
+        groupTopicIds.forEach(id => next.add(id));
+      }
+      saveTopicFilter(subject, next);
+      refreshChips();
+    });
+  });
+
+  // Individual chip toggles
+  document.querySelectorAll('.topic-group .topic-chip').forEach(chip => {
+    chip.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = chip.dataset.topicId;
+      const next = new Set(activeIds);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      saveTopicFilter(subject, next);
+      refreshChips();
+    });
+  });
+
+  // Select all
+  document.getElementById('filter-all').addEventListener('click', () => {
+    const allIds = new Set(meta.topics.filter(t => t.count > 0).map(t => t.id));
+    saveTopicFilter(subject, allIds);
+    refreshChips();
+  });
+  // Select none
+  document.getElementById('filter-none').addEventListener('click', () => {
+    saveTopicFilter(subject, new Set());
+    refreshChips();
   });
 
   showView('subject');
