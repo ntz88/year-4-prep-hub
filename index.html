@@ -19,11 +19,13 @@
   --c-maths: #185FA5;
   --c-english: #993556;
   --c-reading: #0F6E56;
+  --c-science: #5E3FBE;
 
   /* Subject tints (4% bg) */
   --tint-maths: rgba(24, 95, 165, 0.04);
   --tint-english: rgba(153, 53, 86, 0.04);
   --tint-reading: rgba(15, 110, 86, 0.04);
+  --tint-science: rgba(94, 63, 190, 0.04);
 
   /* Neutrals */
   --bg: #FCFBF9;
@@ -73,6 +75,7 @@ body::before {
 body.tint-maths::before { background: linear-gradient(180deg, rgba(24, 95, 165, 0.05) 0%, rgba(24, 95, 165, 0.015) 100%); }
 body.tint-english::before { background: linear-gradient(180deg, rgba(153, 53, 86, 0.05) 0%, rgba(153, 53, 86, 0.015) 100%); }
 body.tint-reading::before { background: linear-gradient(180deg, rgba(15, 110, 86, 0.05) 0%, rgba(15, 110, 86, 0.015) 100%); }
+body.tint-science::before { background: linear-gradient(180deg, rgba(94, 63, 190, 0.05) 0%, rgba(94, 63, 190, 0.015) 100%); }
 
 main, header, footer { position: relative; z-index: 1; }
 
@@ -178,11 +181,25 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 24px;
 }
 
+/* Larger, gradient-filled eyebrow specifically on the home hero */
+.hero .eyebrow {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 22px;
+  background: linear-gradient(95deg, #185FA5 0%, #2479c8 35%, #5856d6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  display: inline-block;
+}
+
 .hero-title {
   font-size: 44px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.1;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
   margin-bottom: 20px;
   color: var(--text);
 }
@@ -197,7 +214,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 15px;
   color: var(--text-2);
   max-width: 520px;
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 /* ============================================================
@@ -205,10 +222,10 @@ a { color: inherit; text-decoration: none; }
    ============================================================ */
 .bento {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 12px;
-  min-height: 420px;
+  min-height: 480px;
   margin-bottom: 64px;
 }
 
@@ -216,7 +233,7 @@ a { color: inherit; text-decoration: none; }
   background: var(--surface);
   border: 0.5px solid var(--line);
   border-radius: 12px;
-  padding: 28px;
+  padding: 24px 24px 22px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
@@ -230,38 +247,37 @@ a { color: inherit; text-decoration: none; }
   transform: translateY(-1px);
 }
 
-.tile-maths { grid-column: 1; grid-row: 1 / span 2; }
+.tile-maths   { grid-column: 1; grid-row: 1; }
 .tile-english { grid-column: 2; grid-row: 1; }
-.tile-reading { grid-column: 2; grid-row: 2; }
+.tile-reading { grid-column: 1; grid-row: 2; }
+.tile-science { grid-column: 2; grid-row: 2; }
 
 .tile-icon-area {
   display: grid;
   place-items: center;
   width: 100%;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
+  height: 96px;
 }
-.tile-maths .tile-icon-area { height: 160px; }
-.tile-english .tile-icon-area, .tile-reading .tile-icon-area { height: 88px; }
 
 .tile-meta {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 12px;
+  gap: 12px;
+  margin-bottom: 4px;
 }
 
 .tile-name {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 500;
   color: var(--text);
   letter-spacing: -0.015em;
   line-height: 1.2;
 }
-.tile-maths .tile-name { font-size: 24px; }
-.tile-english .tile-name, .tile-reading .tile-name { font-size: 17px; }
 
 .tile-sub {
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--text-2);
   margin-top: 4px;
   font-weight: 400;
@@ -273,6 +289,8 @@ a { color: inherit; text-decoration: none; }
   color: var(--text-3);
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  flex-shrink: 0;
+  margin-top: 6px;
 }
 
 .tile-spacer { flex: 1; }
@@ -321,6 +339,7 @@ a { color: inherit; text-decoration: none; }
 .tile-maths .tile-progress-fill { background: var(--c-maths); }
 .tile-english .tile-progress-fill { background: var(--c-english); }
 .tile-reading .tile-progress-fill { background: var(--c-reading); }
+.tile-science .tile-progress-fill { background: var(--c-science); }
 
 /* ============================================================
    HOME — FOOTER
@@ -435,6 +454,32 @@ a { color: inherit; text-decoration: none; }
   animation: glass-drift 5s ease-in-out infinite;
 }
 
+/* SCIENCE — atom with orbiting electrons */
+@keyframes orbit-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes nucleus-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+.science-icon .orbit {
+  transform-origin: 70px 44px;
+  animation: orbit-spin 6s linear infinite;
+}
+.science-icon .orbit-2 {
+  animation-duration: 8s;
+  animation-direction: reverse;
+}
+.science-icon .orbit-3 {
+  animation-duration: 10s;
+}
+.science-icon .nucleus {
+  transform-origin: 70px 44px;
+  transform-box: fill-box;
+  animation: nucleus-pulse 3s ease-in-out infinite;
+}
+
 /* ============================================================
    SUBJECT PAGE — HERO CARD
    ============================================================ */
@@ -462,6 +507,7 @@ a { color: inherit; text-decoration: none; }
 .subject-icon-square.maths { background: var(--c-maths); }
 .subject-icon-square.english { background: var(--c-english); }
 .subject-icon-square.reading { background: var(--c-reading); }
+.subject-icon-square.science { background: var(--c-science); }
 .subject-icon-square svg { width: 28px; height: 28px; }
 
 .subject-title {
@@ -499,6 +545,7 @@ a { color: inherit; text-decoration: none; }
 .start-btn.maths { background: var(--c-maths); }
 .start-btn.english { background: var(--c-english); }
 .start-btn.reading { background: var(--c-reading); }
+.start-btn.science { background: var(--c-science); }
 
 .subject-stats {
   display: flex;
@@ -527,6 +574,7 @@ a { color: inherit; text-decoration: none; }
 .subject-stat.maths .subject-stat-num.tally { color: var(--c-maths); }
 .subject-stat.english .subject-stat-num.tally { color: var(--c-english); }
 .subject-stat.reading .subject-stat-num.tally { color: var(--c-reading); }
+.subject-stat.science .subject-stat-num.tally { color: var(--c-science); }
 
 .subject-stat-label {
   font-size: 11px;
@@ -678,6 +726,7 @@ a { color: inherit; text-decoration: none; }
 .topic-chip.active.maths { background: var(--c-maths); border-color: var(--c-maths); }
 .topic-chip.active.english { background: var(--c-english); border-color: var(--c-english); }
 .topic-chip.active.reading { background: var(--c-reading); border-color: var(--c-reading); }
+.topic-chip.active.science { background: var(--c-science); border-color: var(--c-science); }
 
 /* Disabled topic-chip (zero items) */
 .topic-chip.empty {
@@ -688,6 +737,7 @@ a { color: inherit; text-decoration: none; }
 .covered-summary-active.maths { color: var(--c-maths); }
 .covered-summary-active.english { color: var(--c-english); }
 .covered-summary-active.reading { color: var(--c-reading); }
+.covered-summary-active.science { color: var(--c-science); }
 
 /* ============================================================
    TOPIC GROUPS (accordion)
@@ -743,6 +793,7 @@ a { color: inherit; text-decoration: none; }
 .topic-group.all.maths .group-check { background: var(--c-maths); }
 .topic-group.all.english .group-check { background: var(--c-english); }
 .topic-group.all.reading .group-check { background: var(--c-reading); }
+.topic-group.all.science .group-check { background: var(--c-science); }
 .topic-group.all .group-check svg { opacity: 1; }
 .topic-group.all .group-check svg path { stroke: white; }
 
@@ -751,6 +802,7 @@ a { color: inherit; text-decoration: none; }
 .topic-group.partial.maths .group-check { background: var(--c-maths); }
 .topic-group.partial.english .group-check { background: var(--c-english); }
 .topic-group.partial.reading .group-check { background: var(--c-reading); }
+.topic-group.partial.science .group-check { background: var(--c-science); }
 .topic-group.partial .group-check::after {
   content: '';
   width: 10px;
@@ -778,6 +830,7 @@ a { color: inherit; text-decoration: none; }
 .topic-group-meta .sub-count.maths { color: var(--c-maths); font-weight: 500; }
 .topic-group-meta .sub-count.english { color: var(--c-english); font-weight: 500; }
 .topic-group-meta .sub-count.reading { color: var(--c-reading); font-weight: 500; }
+.topic-group-meta .sub-count.science { color: var(--c-science); font-weight: 500; }
 
 .topic-group-toggle {
   width: 22px;
@@ -831,6 +884,7 @@ a { color: inherit; text-decoration: none; }
 .filter-bottom-summary .pool-count.maths { color: var(--c-maths); }
 .filter-bottom-summary .pool-count.english { color: var(--c-english); }
 .filter-bottom-summary .pool-count.reading { color: var(--c-reading); }
+.filter-bottom-summary .pool-count.science { color: var(--c-science); }
 .filter-bottom-summary .warning {
   color: var(--c-english);
   font-weight: 500;
@@ -883,26 +937,26 @@ a { color: inherit; text-decoration: none; }
 .quiz-status-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .subject-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 14px 6px 6px;
+  gap: 9px;
+  padding: 7px 16px 7px 7px;
   border-radius: 999px;
   background: var(--surface);
   border: 0.5px solid var(--line);
-  font-size: 13px;
+  font-size: 14.5px;
   font-weight: 500;
   letter-spacing: -0.005em;
 }
 
 .subject-pill-icon {
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
   display: grid;
   place-items: center;
   color: white;
@@ -910,37 +964,39 @@ a { color: inherit; text-decoration: none; }
 .subject-pill-icon.maths { background: var(--c-maths); }
 .subject-pill-icon.english { background: var(--c-english); }
 .subject-pill-icon.reading { background: var(--c-reading); }
-.subject-pill-icon svg { width: 12px; height: 12px; }
+.subject-pill-icon.science { background: var(--c-science); }
+.subject-pill-icon svg { width: 14px; height: 14px; }
 
 .q-progress-text {
-  font-size: 13px;
+  font-size: 14.5px;
   color: var(--text-2);
+  font-weight: 500;
 }
 
 .quiz-status-right {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 20px;
 }
 
 .timer {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text);
   font-variant-numeric: tabular-nums;
   font-weight: 500;
   letter-spacing: 0.01em;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
 }
-.timer svg { width: 13px; height: 13px; stroke-width: 1.8; opacity: 0.7; }
+.timer svg { width: 15px; height: 15px; stroke-width: 1.8; opacity: 0.75; }
 .timer.over { color: var(--c-english); }
 
 .exit-link {
-  font-size: 13px;
+  font-size: 14.5px;
   color: var(--text-2);
   font-weight: 500;
-  padding: 7px 14px;
+  padding: 9px 18px;
   border-radius: 999px;
   border: 0.5px solid var(--line);
   background: var(--surface);
@@ -971,6 +1027,7 @@ a { color: inherit; text-decoration: none; }
 .q-progress-bar-fill.maths { background: var(--c-maths); }
 .q-progress-bar-fill.english { background: var(--c-english); }
 .q-progress-bar-fill.reading { background: var(--c-reading); }
+.q-progress-bar-fill.science { background: var(--c-science); }
 
 .quiz-area {
   max-width: 760px;
@@ -1029,6 +1086,84 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: -0.005em;
 }
 
+/* Reading passage audio toolbar */
+.passage-audio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 0.5px solid var(--line-soft);
+}
+
+.passage-audio-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px 7px 7px;
+  border-radius: 999px;
+  background: var(--c-reading);
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  transition: opacity 0.18s var(--ease-out), transform 0.18s var(--ease-out);
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+.passage-audio-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+.passage-audio-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: var(--text-3);
+}
+.passage-audio-btn:disabled:hover { transform: none; }
+
+.passage-audio-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.passage-audio-icon svg { width: 12px; height: 12px; fill: white; }
+
+.passage-audio-status {
+  font-size: 12px;
+  color: var(--text-3);
+  flex: 1;
+}
+
+/* Equalizer animation for "playing" state */
+.passage-audio-bars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+.passage-audio-bars span {
+  display: block;
+  width: 2px;
+  background: white;
+  border-radius: 1px;
+  animation: eq-bar 0.9s ease-in-out infinite;
+}
+.passage-audio-bars span:nth-child(1) { animation-delay: 0s;    height: 6px; }
+.passage-audio-bars span:nth-child(2) { animation-delay: 0.18s; height: 9px; }
+.passage-audio-bars span:nth-child(3) { animation-delay: 0.36s; height: 4px; }
+.passage-audio-bars span:nth-child(4) { animation-delay: 0.54s; height: 8px; }
+
+@keyframes eq-bar {
+  0%, 100% { transform: scaleY(0.4); }
+  50% { transform: scaleY(1.2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .passage-audio-bars span { animation: none; transform: scaleY(0.7); }
+}
+
 .options-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1058,6 +1193,7 @@ a { color: inherit; text-decoration: none; }
 .option.selected.maths { border-color: var(--c-maths); background: rgba(24, 95, 165, 0.04); border-width: 1.5px; }
 .option.selected.english { border-color: var(--c-english); background: rgba(153, 53, 86, 0.04); border-width: 1.5px; }
 .option.selected.reading { border-color: var(--c-reading); background: rgba(15, 110, 86, 0.04); border-width: 1.5px; }
+.option.selected.science { border-color: var(--c-science); background: rgba(94, 63, 190, 0.04); border-width: 1.5px; }
 .option.selected .option-marker.maths-mark { background: var(--c-maths); color: white; }
 .option.selected .option-marker.english-mark { background: var(--c-english); color: white; }
 .option.selected .option-marker.reading-mark { background: var(--c-reading); color: white; }
@@ -1088,9 +1224,9 @@ a { color: inherit; text-decoration: none; }
 /* CORRECT — after check, this is the right answer */
 .option.correct {
   border-color: var(--c-reading);
-  background: rgba(15, 110, 86, 0.10);
+  background: rgba(31, 139, 69, 0.13);
   border-width: 2px;
-  box-shadow: 0 0 0 3px rgba(15, 110, 86, 0.10);
+  box-shadow: 0 0 0 3px rgba(31, 139, 69, 0.10);
 }
 .option.correct .option-marker {
   background: var(--c-reading);
@@ -1113,9 +1249,9 @@ a { color: inherit; text-decoration: none; }
 /* INCORRECT — after check, this was the user's wrong choice */
 .option.incorrect {
   border-color: var(--c-english);
-  background: rgba(153, 53, 86, 0.10);
+  background: rgba(193, 49, 69, 0.12);
   border-width: 2px;
-  box-shadow: 0 0 0 3px rgba(153, 53, 86, 0.10);
+  box-shadow: 0 0 0 3px rgba(193, 49, 69, 0.10);
 }
 .option.incorrect .option-marker {
   background: var(--c-english);
@@ -1178,53 +1314,111 @@ a { color: inherit; text-decoration: none; }
 .hint-content.show { display: block; }
 
 .feedback {
-  margin-top: 0;
-  margin-bottom: 24px;
-  padding: 0;
-  border-radius: 12px;
-  background: var(--surface);
-  border: 0.5px solid var(--line);
-  overflow: hidden;
+  display: none; /* Replaced by verdict-bar */
+}
+
+/* ============================================================
+   VERDICT BAR (bottom-fixed feedback + continue)
+   ============================================================ */
+.verdict-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: none;
-  animation: feedback-in 0.32s var(--ease-out);
+  z-index: 50;
+  border-top: 0.5px solid rgba(0, 0, 0, 0.06);
+  animation: verdict-slide-up 0.32s var(--ease-out);
 }
-.feedback.show { display: block; }
-.feedback strong { font-weight: 500; }
+.verdict-bar.show { display: block; }
 
-@keyframes feedback-in {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes verdict-slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
 
-.feedback-banner {
+.verdict-bar.correct  { background: #C8EBC0; }
+.verdict-bar.incorrect { background: #FAC9CF; }
+
+.verdict-bar-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 22px 48px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 18px;
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: white;
+  gap: 22px;
 }
-.feedback-banner.correct { background: var(--c-reading); }
-.feedback-banner.incorrect { background: var(--c-english); }
-.feedback-banner-icon {
-  width: 22px;
-  height: 22px;
+
+.verdict-icon {
+  width: 52px;
+  height: 52px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.22);
+  background: white;
   display: grid;
   place-items: center;
   flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
-.feedback-banner-icon svg { width: 13px; height: 13px; stroke-width: 2.6; }
+.verdict-icon svg { width: 26px; height: 26px; stroke-width: 3; }
+.verdict-bar.correct  .verdict-icon svg { stroke: #1F8B45; }
+.verdict-bar.incorrect .verdict-icon svg { stroke: #C13145; }
 
-.feedback-body {
-  padding: 16px 20px 18px;
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--text);
+.verdict-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
+.verdict-headline {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.verdict-bar.correct  .verdict-headline { color: #1B7A40; }
+.verdict-bar.incorrect .verdict-headline { color: #9C2A3D; }
+
+.verdict-explain {
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.82);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.verdict-explain strong { font-weight: 500; }
+
+.verdict-continue {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: white;
+  flex-shrink: 0;
+  transition: transform 0.18s var(--ease-out), opacity 0.18s var(--ease-out);
+}
+.verdict-continue:hover { transform: translateY(-1px); opacity: 0.94; }
+.verdict-continue svg { width: 14px; height: 14px; stroke-width: 2.4; }
+.verdict-continue.maths { background: var(--c-maths); }
+.verdict-continue.english { background: var(--c-english); }
+.verdict-continue.reading { background: var(--c-reading); }
+.verdict-continue.science { background: var(--c-science); }
+
+/* Hide the old quiz-bottom row when the verdict bar is showing */
+body.has-verdict .quiz-bottom { display: none; }
+/* Pad the bottom of the quiz-area so the fixed verdict bar doesn't cover content */
+body.has-verdict .quiz-area { padding-bottom: 160px; }
+
+
 
 .quiz-bottom {
   display: flex;
@@ -1261,6 +1455,7 @@ a { color: inherit; text-decoration: none; }
 .next-btn.maths { background: var(--c-maths); }
 .next-btn.english { background: var(--c-english); }
 .next-btn.reading { background: var(--c-reading); }
+.next-btn.science { background: var(--c-science); }
 
 /* ============================================================
    RESULTS PAGE
@@ -1290,6 +1485,7 @@ a { color: inherit; text-decoration: none; }
 .results-eyebrow .left .sub-tag.maths { color: var(--c-maths); }
 .results-eyebrow .left .sub-tag.english { color: var(--c-english); }
 .results-eyebrow .left .sub-tag.reading { color: var(--c-reading); }
+.results-eyebrow .left .sub-tag.science { color: var(--c-science); }
 .results-eyebrow .right {
   font-size: 12px;
   color: var(--text-3);
@@ -1345,6 +1541,7 @@ a { color: inherit; text-decoration: none; }
 .score-encouragement.maths { color: var(--c-maths); }
 .score-encouragement.english { color: var(--c-english); }
 .score-encouragement.reading { color: var(--c-reading); }
+.score-encouragement.science { color: var(--c-science); }
 
 .dot-grid {
   display: flex;
@@ -1363,6 +1560,7 @@ a { color: inherit; text-decoration: none; }
 .q-dot.correct.maths { background: var(--c-maths); }
 .q-dot.correct.english { background: var(--c-english); }
 .q-dot.correct.reading { background: var(--c-reading); }
+.q-dot.correct.science { background: var(--c-science); }
 .q-dot.wrong { background: var(--wrong-red); }
 .q-dot.skipped {
   background: transparent;
@@ -1422,6 +1620,7 @@ a { color: inherit; text-decoration: none; }
 .tally-card-eyebrow .sub.maths { color: var(--c-maths); }
 .tally-card-eyebrow .sub.english { color: var(--c-english); }
 .tally-card-eyebrow .sub.reading { color: var(--c-reading); }
+.tally-card-eyebrow .sub.science { color: var(--c-science); }
 
 .tally-card-num {
   font-size: 16px;
@@ -1443,6 +1642,7 @@ a { color: inherit; text-decoration: none; }
 .tally-card-bar-fill.maths { background: var(--c-maths); }
 .tally-card-bar-fill.english { background: var(--c-english); }
 .tally-card-bar-fill.reading { background: var(--c-reading); }
+.tally-card-bar-fill.science { background: var(--c-science); }
 
 .tally-card-prev {
   font-size: 12px;
@@ -1554,6 +1754,7 @@ a { color: inherit; text-decoration: none; }
 .result-btn.primary.maths { background: var(--c-maths); }
 .result-btn.primary.english { background: var(--c-english); }
 .result-btn.primary.reading { background: var(--c-reading); }
+.result-btn.primary.science { background: var(--c-science); }
 .result-btn.primary:hover { opacity: 0.92; }
 
 /* ============================================================
@@ -1655,6 +1856,7 @@ a { color: inherit; text-decoration: none; }
 .modal-btn.primary.maths { background: var(--c-maths); }
 .modal-btn.primary.english { background: var(--c-english); }
 .modal-btn.primary.reading { background: var(--c-reading); }
+.modal-btn.primary.science { background: var(--c-science); }
 .modal-btn.primary:hover { opacity: 0.92; transform: translateY(-1px); }
 
 /* ============================================================
@@ -1729,14 +1931,20 @@ a { color: inherit; text-decoration: none; }
   .hero-title { font-size: 34px; }
   .bento {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto auto auto;
   }
-  .tile-maths, .tile-english, .tile-reading { grid-column: 1; grid-row: auto; }
-  .tile-maths .tile-icon-area { height: 120px; }
+  .tile-maths, .tile-english, .tile-reading, .tile-science { grid-column: 1; grid-row: auto; }
   .options-grid { grid-template-columns: 1fr; }
   .q-text { font-size: 22px; }
   .results-actions { grid-template-columns: 1fr; }
   .home-footer { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .verdict-bar-inner { padding: 14px 20px; gap: 12px; }
+  .verdict-icon { width: 36px; height: 36px; }
+  .verdict-icon svg { width: 18px; height: 18px; }
+  .verdict-headline { font-size: 14px; }
+  .verdict-explain { font-size: 12.5px; -webkit-line-clamp: 2; line-clamp: 2; }
+  .verdict-continue { padding: 10px 18px; font-size: 13px; }
+  body.has-verdict .quiz-area { padding-bottom: 160px; }
 }
 
 </style>
@@ -1760,12 +1968,12 @@ a { color: inherit; text-decoration: none; }
 
   <main class="page">
     <section class="hero">
-      <div class="eyebrow">GL &amp; NGRT practice · Years 3 to 6</div>
+      <div class="eyebrow">GL &amp; NGRT practice · Year 4</div>
       <h1 class="hero-title">
         Practise the test,
         <span class="second-line">one fresh question at a time.</span>
       </h1>
-      <p class="hero-intro">Pick a subject to start. Your tally keeps score.</p>
+      <p class="hero-intro">A Year 4 practice hub covering GL Progress Tests in Maths and English, plus the NGRT reading assessment — with hundreds of questions across maths, vocabulary, grammar and reading comprehension.</p>
     </section>
 
     <section class="bento">
@@ -1908,6 +2116,54 @@ a { color: inherit; text-decoration: none; }
           </div>
         </div>
       </button>
+
+      <button class="tile tile-science" data-subject="science">
+        <div class="tile-icon-area">
+          <svg class="anim-icon science-icon" viewBox="0 0 140 88" width="140" height="88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Atom: nucleus + 3 orbiting electrons on rotating ellipses -->
+            <!-- Orbit 1 (horizontal-ish) -->
+            <g class="orbit orbit-1">
+              <ellipse cx="70" cy="44" rx="34" ry="14" fill="none" stroke="#5E3FBE" stroke-width="1.1" stroke-opacity="0.5"/>
+              <circle cx="104" cy="44" r="3.6" fill="#5E3FBE"/>
+            </g>
+            <!-- Orbit 2 (rotated 60°) -->
+            <g class="orbit orbit-2" transform="rotate(60 70 44)">
+              <ellipse cx="70" cy="44" rx="34" ry="14" fill="none" stroke="#5E3FBE" stroke-width="1.1" stroke-opacity="0.45"/>
+              <circle cx="36" cy="44" r="3.6" fill="#7757D6"/>
+            </g>
+            <!-- Orbit 3 (rotated -60°) -->
+            <g class="orbit orbit-3" transform="rotate(-60 70 44)">
+              <ellipse cx="70" cy="44" rx="34" ry="14" fill="none" stroke="#5E3FBE" stroke-width="1.1" stroke-opacity="0.4"/>
+              <circle cx="104" cy="44" r="3.6" fill="#9176E0"/>
+            </g>
+            <!-- Nucleus -->
+            <g class="nucleus">
+              <circle cx="70" cy="44" r="7" fill="#5E3FBE"/>
+              <circle cx="70" cy="44" r="3.5" fill="#9176E0"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="tile-meta">
+          <div>
+            <div class="tile-name">Science</div>
+            <div class="tile-sub">16 questions · ~25 min</div>
+          </div>
+          <div class="tile-label">GL PTS</div>
+        </div>
+
+        <div class="tile-spacer"></div>
+
+        <div class="tile-footer">
+          <div class="tile-tally-row">
+            <span class="tile-tally-eyebrow">Tally</span>
+            <span class="tile-tally-num" id="home-tally-num-science">0 / 0</span>
+          </div>
+          <div class="tile-progress">
+            <div class="tile-progress-fill" id="home-tally-bar-science" style="width: 0%"></div>
+          </div>
+        </div>
+      </button>
     </section>
 
     <footer class="home-footer">
@@ -1952,6 +2208,23 @@ a { color: inherit; text-decoration: none; }
       <button class="modal-btn cancel" id="exit-modal-cancel">Keep going</button>
       <button class="modal-btn primary" id="exit-modal-confirm">End and see results</button>
     </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     VERDICT BAR (bottom feedback after checking an answer)
+     ============================================================ -->
+<div class="verdict-bar" id="verdict-bar">
+  <div class="verdict-bar-inner">
+    <div class="verdict-icon" id="verdict-icon"></div>
+    <div class="verdict-text">
+      <div class="verdict-headline" id="verdict-headline"></div>
+      <div class="verdict-explain" id="verdict-explain"></div>
+    </div>
+    <button class="verdict-continue" id="verdict-continue">
+      <span id="verdict-continue-label">Continue</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </button>
   </div>
 </div>
 
@@ -8128,11 +8401,12 @@ let session = {
   }
 };
 
-const QUIZ_LENGTHS = { math: 22, english: 20, reading: 16 };
+const QUIZ_LENGTHS = { math: 22, english: 20, reading: 16, science: 16 };
 const QUIZ_META = {
   math: { title: "Mathematics", subtitle: "GL PTM · place value, fractions, factors, money, machines", pillColor: "var(--c-math)", pillLabel: "GL PTM" },
   english: { title: "English", subtitle: "GL PTE · cloze passages, grammar, vocabulary in context", pillColor: "var(--c-english)", pillLabel: "GL PTE" },
-  reading: { title: "Reading Comprehension", subtitle: "NGRT · inference, character motivation, author's craft", pillColor: "var(--c-reading)", pillLabel: "NGRT" }
+  reading: { title: "Reading Comprehension", subtitle: "NGRT · inference, character motivation, author's craft", pillColor: "var(--c-reading)", pillLabel: "NGRT" },
+  science: { title: "Science", subtitle: "GL PTS · living things, materials, forces, electricity", pillColor: "var(--c-science)", pillLabel: "GL PTS" }
 };
 
 /* Per-question time budgets in seconds, calibrated to actual exam pacing.
@@ -8371,6 +8645,805 @@ function generateReadingQuestions() {
   return questions;
 }
 
+// =============================================================================
+//  SCIENCE QUESTION POOL — Year 3 + Year 4 + Working Scientifically
+//  Matches GL PTS 10 (Progress Test in Science, Year 4 / Grade 4)
+// =============================================================================
+//
+//  Topic IDs map to the topic groups in SUBJECT_META.science:
+//    living-things    Living things & habitats
+//    animals-humans   Animals including humans
+//    materials        Materials & states of matter
+//    physics          Forces, sound, light & electricity
+//    working          Working scientifically
+//
+//  Question shape: { topic, text, options:[4], correctIndex, explain, hint? }
+// =============================================================================
+
+const sciencePool = [
+
+// ────────────────────────────────────────────────────────────────────────────
+//  GROUP 1 — Living things & habitats  (24 questions)
+// ────────────────────────────────────────────────────────────────────────────
+
+{ topic: 'living-things',
+  text: "Which of these animals is a vertebrate?",
+  options: ["Earthworm", "Snail", "Frog", "Spider"],
+  correctIndex: 2,
+  explain: "Vertebrates have a backbone. Frogs are amphibians and have a backbone. Earthworms, snails and spiders are all invertebrates — they have no backbone." },
+
+{ topic: 'living-things',
+  text: "Which of these is an invertebrate?",
+  options: ["Sparrow", "Goldfish", "Beetle", "Hedgehog"],
+  correctIndex: 2,
+  explain: "Beetles are insects, which are invertebrates (no backbone). Sparrows, goldfish and hedgehogs all have backbones." },
+
+{ topic: 'living-things',
+  text: "Animals that have fur, feed milk to their young and breathe air are called:",
+  options: ["Birds", "Reptiles", "Mammals", "Fish"],
+  correctIndex: 2,
+  explain: "Mammals have fur or hair, feed their young on milk, and breathe air with lungs. Humans, dogs and whales are all mammals." },
+
+{ topic: 'living-things',
+  text: "Which feature is found ONLY in birds?",
+  options: ["A backbone", "Lungs", "Feathers", "Two eyes"],
+  correctIndex: 2,
+  explain: "Feathers are unique to birds — no other group of animals has them. Many animals have backbones, lungs or two eyes." },
+
+{ topic: 'living-things',
+  text: "A scientist uses a classification key. The first question is: 'Does the animal have a backbone?' This question splits animals into:",
+  options: ["Mammals and birds", "Vertebrates and invertebrates", "Predators and prey", "Animals and plants"],
+  correctIndex: 1,
+  explain: "Backbone presence is the first major split — vertebrates (with) versus invertebrates (without)." },
+
+{ topic: 'living-things',
+  text: "In a food chain, the arrow points from the food TO the eater. So in 'grass → rabbit → fox', the rabbit is eaten by:",
+  options: ["The grass", "The fox", "Itself", "Another rabbit"],
+  correctIndex: 1,
+  explain: "Arrows show the direction energy flows. Grass is eaten by the rabbit, and the rabbit is eaten by the fox." },
+
+{ topic: 'living-things',
+  text: "The first organism in every food chain is always:",
+  options: ["A predator", "A herbivore", "A producer (usually a plant)", "A decomposer"],
+  correctIndex: 2,
+  explain: "Producers — usually green plants — make their own food from sunlight. Every food chain starts with a producer because all energy ultimately comes from the Sun." },
+
+{ topic: 'living-things',
+  text: "A rabbit eats grass. A fox eats the rabbit. The fox is best described as a:",
+  options: ["Producer", "Primary consumer", "Predator", "Decomposer"],
+  correctIndex: 2,
+  explain: "Foxes hunt and eat other animals, so they are predators. The rabbit (which eats the producer) is the primary consumer." },
+
+{ topic: 'living-things',
+  text: "An animal that eats only plants is called:",
+  options: ["A carnivore", "A herbivore", "An omnivore", "A producer"],
+  correctIndex: 1,
+  explain: "Herbivores eat only plants. Carnivores eat only meat. Omnivores eat both. Cows, sheep and rabbits are herbivores." },
+
+{ topic: 'living-things',
+  text: "Humans eat both meat and vegetables. Humans are:",
+  options: ["Carnivores", "Herbivores", "Omnivores", "Producers"],
+  correctIndex: 2,
+  explain: "Animals that eat both plants and meat are omnivores. Humans, bears and pigs are all omnivores." },
+
+{ topic: 'living-things',
+  text: "Which of these is the BEST habitat for a polar bear?",
+  options: ["A desert", "An Arctic ice sheet", "A tropical rainforest", "A pond"],
+  correctIndex: 1,
+  explain: "Polar bears are adapted to extreme cold, with thick fur and a layer of fat. They live and hunt on Arctic ice." },
+
+{ topic: 'living-things',
+  text: "A camel has long eyelashes, large flat feet and stores fat in its hump. These features help it survive in:",
+  options: ["The Arctic", "A rainforest", "A desert", "A river"],
+  correctIndex: 2,
+  explain: "These are all adaptations to desert life: lashes block sand, wide feet stop it sinking in sand, the hump's fat stores energy when food is scarce." },
+
+{ topic: 'living-things',
+  text: "Living things change their environments. A beaver changes its environment by:",
+  options: ["Growing fur", "Building dams across streams", "Eating leaves", "Sleeping in winter"],
+  correctIndex: 1,
+  explain: "Beavers cut down trees and build dams, which creates ponds and changes the landscape — a clear example of an animal changing its habitat." },
+
+{ topic: 'living-things',
+  text: "What might happen to woodland animals if all the trees are cut down?",
+  options: ["They will grow larger", "They will lose food and shelter", "They will become invertebrates", "They will turn into fish"],
+  correctIndex: 1,
+  explain: "Trees provide food, shelter and nesting sites. Removing them takes away the resources that woodland animals depend on." },
+
+{ topic: 'living-things',
+  text: "Which is the best way to sort animals into groups?",
+  options: ["By their colour only", "By the features they share, like backbones or wings", "By how loud they are", "By the year they were born"],
+  correctIndex: 1,
+  explain: "Scientists classify living things by shared features (e.g. backbone, wings, fur). Colour alone isn't reliable — many different animals can share a colour." },
+
+{ topic: 'living-things',
+  text: "A frog is described as: 'has a backbone, lays eggs in water, has moist skin'. A frog is best classified as a:",
+  options: ["Mammal", "Reptile", "Amphibian", "Bird"],
+  correctIndex: 2,
+  explain: "Amphibians have moist skin, lay eggs in water, and live partly on land and partly in water. Frogs and newts are amphibians." },
+
+{ topic: 'living-things',
+  text: "Snakes and lizards have dry, scaly skin and lay eggs on land. They are:",
+  options: ["Amphibians", "Mammals", "Reptiles", "Birds"],
+  correctIndex: 2,
+  explain: "Reptiles have scaly, waterproof skin and lay eggs on land. Snakes, lizards and crocodiles are reptiles." },
+
+{ topic: 'living-things',
+  text: "Pollution from a factory leaks into a river. Which of these is MOST likely to happen?",
+  options: ["The fish in the river will become healthier", "The river plants and animals may be harmed", "The river will dry up immediately", "The Sun will stop shining"],
+  correctIndex: 1,
+  explain: "Pollution damages habitats. River plants and animals may be poisoned or lose food sources, and populations can fall." },
+
+{ topic: 'living-things',
+  text: "In the food chain 'oak tree → caterpillar → blue tit → sparrowhawk', the sparrowhawk is the:",
+  options: ["Producer", "Top predator", "Herbivore", "Decomposer"],
+  correctIndex: 1,
+  explain: "The sparrowhawk is at the top of the chain — nothing eats it. It's the top predator." },
+
+{ topic: 'living-things',
+  text: "Why is it useful for scientists to use a classification key?",
+  options: ["To make pretty pictures", "To identify and name living things using their features", "To make animals friendlier", "To replace habitats"],
+  correctIndex: 1,
+  explain: "Classification keys help scientists identify a living thing by asking yes/no questions about its features." },
+
+{ topic: 'living-things',
+  text: "A pond in a park is drained. The frogs that lived there will MOST likely:",
+  options: ["Lay eggs on the dry ground", "Search for another pond or die", "Turn into fish", "Grow lungs overnight"],
+  correctIndex: 1,
+  explain: "Frogs need water to lay eggs and keep their skin moist. If their habitat is destroyed, they must find another or they may not survive." },
+
+{ topic: 'living-things',
+  text: "Which animal is best adapted to live in a fast-flowing river?",
+  options: ["A fish with streamlined body", "A camel", "A sloth", "A polar bear"],
+  correctIndex: 0,
+  explain: "A streamlined body shape lets the fish move easily through fast-moving water. Camels, sloths and polar bears live elsewhere." },
+
+{ topic: 'living-things',
+  text: "Animals that come out at night are called:",
+  options: ["Diurnal", "Nocturnal", "Migratory", "Hibernating"],
+  correctIndex: 1,
+  explain: "'Nocturnal' means active at night. Owls, bats and badgers are nocturnal. 'Diurnal' means active in the day." },
+
+{ topic: 'living-things',
+  text: "Which group of animals has gills, lives in water and is covered in scales?",
+  options: ["Birds", "Mammals", "Fish", "Reptiles"],
+  correctIndex: 2,
+  explain: "Fish breathe through gills, live in water, and have scaly skin. Salmon and goldfish are fish." },
+
+
+// ────────────────────────────────────────────────────────────────────────────
+//  GROUP 2 — Animals including humans (24 questions)
+// ────────────────────────────────────────────────────────────────────────────
+
+{ topic: 'animals-humans',
+  text: "What is the main job of the human skeleton?",
+  options: ["To make food", "To support the body and protect organs", "To digest food", "To pump blood"],
+  correctIndex: 1,
+  explain: "The skeleton supports the body, helps us move, and protects organs (the skull protects the brain, ribs protect the heart and lungs)." },
+
+{ topic: 'animals-humans',
+  text: "Which body part is protected by the rib cage?",
+  options: ["The brain", "The heart and lungs", "The stomach", "The kidneys"],
+  correctIndex: 1,
+  explain: "The rib cage is a strong shield around the heart and lungs." },
+
+{ topic: 'animals-humans',
+  text: "Muscles work in pairs. When you bend your arm, the bicep:",
+  options: ["Relaxes", "Disappears", "Contracts (gets shorter)", "Grows fur"],
+  correctIndex: 2,
+  explain: "Muscles can only pull, not push. To bend the arm, the bicep contracts (shortens) while the tricep relaxes." },
+
+{ topic: 'animals-humans',
+  text: "Some animals, like worms, have no skeleton inside their body. They are called:",
+  options: ["Vertebrates", "Invertebrates", "Mammals", "Reptiles"],
+  correctIndex: 1,
+  explain: "Animals without an internal skeleton are invertebrates. Earthworms, snails and insects are invertebrates." },
+
+{ topic: 'animals-humans',
+  text: "Which of these foods is the BEST source of protein?",
+  options: ["Bread", "Apple", "Chicken", "Butter"],
+  correctIndex: 2,
+  explain: "Meat, fish, beans and eggs are protein-rich. Bread is mainly carbohydrate, apples are mainly sugar/fibre, butter is mainly fat." },
+
+{ topic: 'animals-humans',
+  text: "Which food group gives us the most quick energy?",
+  options: ["Carbohydrates (bread, pasta, rice)", "Vitamins", "Protein", "Water"],
+  correctIndex: 0,
+  explain: "Carbohydrates like bread, pasta and rice are the body's main source of quick energy." },
+
+{ topic: 'animals-humans',
+  text: "Why do we need vitamins and minerals in our diet?",
+  options: ["They give us most of our energy", "They keep our body working properly and help us stay healthy", "They build big muscles instantly", "They replace water in the body"],
+  correctIndex: 1,
+  explain: "Even in small amounts, vitamins and minerals help the body function — bones, blood, skin and the immune system all rely on them." },
+
+{ topic: 'animals-humans',
+  text: "What is the first organ that food passes through after the mouth?",
+  options: ["Stomach", "Small intestine", "Oesophagus (food pipe)", "Liver"],
+  correctIndex: 2,
+  explain: "After chewing and swallowing, food travels down the oesophagus (also called the gullet or food pipe) into the stomach." },
+
+{ topic: 'animals-humans',
+  text: "Where is most of the food broken down so the body can use the nutrients?",
+  options: ["The mouth", "The stomach and small intestine", "The lungs", "The skull"],
+  correctIndex: 1,
+  explain: "Digestion really gets going in the stomach, and most nutrients are absorbed in the small intestine." },
+
+{ topic: 'animals-humans',
+  text: "What is the main job of the large intestine?",
+  options: ["To make food", "To absorb water from the leftover food", "To pump blood", "To breathe in oxygen"],
+  correctIndex: 1,
+  explain: "The large intestine absorbs water from waste, leaving solid waste (faeces) to leave the body." },
+
+{ topic: 'animals-humans',
+  text: "Which TWO types of teeth do we use mostly to bite into food?",
+  options: ["Molars", "Canines", "Incisors", "Wisdom teeth"],
+  correctIndex: 2,
+  explain: "Incisors are the flat, sharp-edged front teeth used to bite. Canines tear, molars grind." },
+
+{ topic: 'animals-humans',
+  text: "Which teeth are pointed and used for tearing meat?",
+  options: ["Molars", "Canines", "Incisors", "Premolars"],
+  correctIndex: 1,
+  explain: "Canines are the pointed teeth on either side of the incisors — they tear food, especially meat." },
+
+{ topic: 'animals-humans',
+  text: "Why do herbivores like cows have flat, wide teeth at the back of their mouths?",
+  options: ["To bite meat", "To grind tough plant material", "To dig holes", "To make milk"],
+  correctIndex: 1,
+  explain: "Plants are tough to break down, so herbivores have large, flat molars perfect for grinding leaves and grass." },
+
+{ topic: 'animals-humans',
+  text: "Which is the BEST way to look after your teeth?",
+  options: ["Brush them once a week", "Brush them twice a day with fluoride toothpaste and avoid too much sugar", "Eat lots of sweets daily", "Never visit a dentist"],
+  correctIndex: 1,
+  explain: "Brushing twice a day removes plaque, fluoride strengthens enamel, and reducing sugar prevents tooth decay." },
+
+{ topic: 'animals-humans',
+  text: "Sugar is bad for teeth because:",
+  options: ["It makes teeth bigger", "Bacteria on teeth turn sugar into acid that damages enamel", "It makes teeth turn green", "It evaporates"],
+  correctIndex: 1,
+  explain: "Sugar feeds bacteria in the mouth. The bacteria release acid that wears away enamel and causes cavities." },
+
+{ topic: 'animals-humans',
+  text: "The hard, white outer layer of a tooth is called:",
+  options: ["The root", "Enamel", "The pulp", "Dentine"],
+  correctIndex: 1,
+  explain: "Enamel is the hardest substance in the human body — it covers and protects the rest of the tooth." },
+
+{ topic: 'animals-humans',
+  text: "Sound enters the body mainly through the:",
+  options: ["Nose", "Mouth", "Eyes", "Ears"],
+  correctIndex: 3,
+  explain: "Sound waves travel into the ear, where they vibrate the eardrum and are sent as signals to the brain." },
+
+{ topic: 'animals-humans',
+  text: "The part of the ear that vibrates when sound enters is called the:",
+  options: ["Eardrum", "Eyebrow", "Tongue", "Eyelash"],
+  correctIndex: 0,
+  explain: "The eardrum is a thin sheet of skin that vibrates when sound waves hit it." },
+
+{ topic: 'animals-humans',
+  text: "Which is NOT a healthy diet choice?",
+  options: ["A balanced plate with vegetables, protein and carbs", "Eating only sugary snacks all day", "Drinking water with meals", "Including some fruit each day"],
+  correctIndex: 1,
+  explain: "A varied, balanced diet is healthy. Eating only sugar leaves the body short of protein, vitamins and minerals." },
+
+{ topic: 'animals-humans',
+  text: "Which substance does the body get from drinking milk that helps build strong bones?",
+  options: ["Sugar", "Calcium", "Protein only", "Carbon dioxide"],
+  correctIndex: 1,
+  explain: "Milk contains calcium, which helps bones and teeth stay strong." },
+
+{ topic: 'animals-humans',
+  text: "Animals like humans cannot make their own food. They get energy by:",
+  options: ["Photosynthesis (using sunlight)", "Eating other living things", "Sleeping", "Drinking water only"],
+  correctIndex: 1,
+  explain: "Plants make their own food using sunlight. Animals (including humans) must eat other living things — plants or animals — to get energy." },
+
+{ topic: 'animals-humans',
+  text: "After food is digested, useful parts are absorbed into the:",
+  options: ["Bones", "Blood", "Hair", "Lungs"],
+  correctIndex: 1,
+  explain: "Nutrients pass through the wall of the small intestine into the blood, which carries them around the body." },
+
+{ topic: 'animals-humans',
+  text: "Which animal would have mostly flat, grinding teeth?",
+  options: ["A lion", "A shark", "A horse", "A wolf"],
+  correctIndex: 2,
+  explain: "Horses are herbivores. Their flat molars are perfect for grinding grass. Lions, sharks and wolves are carnivores with sharp tearing teeth." },
+
+{ topic: 'animals-humans',
+  text: "Which is true about the muscles of the heart?",
+  options: ["They never move", "They contract and relax to pump blood", "They digest food", "They make bones"],
+  correctIndex: 1,
+  explain: "The heart is a muscle that contracts and relaxes constantly to pump blood around the body." },
+
+
+// ────────────────────────────────────────────────────────────────────────────
+//  GROUP 3 — Materials & states of matter (24 questions)
+// ────────────────────────────────────────────────────────────────────────────
+
+{ topic: 'materials',
+  text: "The three states of matter are:",
+  options: ["Solid, liquid, gas", "Hot, cold, warm", "Big, medium, small", "Heavy, light, floating"],
+  correctIndex: 0,
+  explain: "Almost all materials on Earth are solids, liquids or gases. State depends on how the particles are arranged and moving." },
+
+{ topic: 'materials',
+  text: "Which best describes a solid?",
+  options: ["It has no shape and spreads out", "It keeps its shape and volume", "It only exists in space", "It always floats on water"],
+  correctIndex: 1,
+  explain: "Solids keep their shape because their particles are tightly packed in fixed positions." },
+
+{ topic: 'materials',
+  text: "Which best describes a liquid?",
+  options: ["Keeps a fixed shape", "Has no volume", "Takes the shape of its container but keeps the same volume", "Always rises into the air"],
+  correctIndex: 2,
+  explain: "Liquids flow and take their container's shape, but the amount of liquid (its volume) stays the same." },
+
+{ topic: 'materials',
+  text: "Gases:",
+  options: ["Are heavier than solids", "Spread out to fill all the space available", "Always stay at the bottom of a container", "Have a fixed shape"],
+  correctIndex: 1,
+  explain: "Gas particles move freely and quickly, spreading out to fill any container." },
+
+{ topic: 'materials',
+  text: "Ice melts to form water. This change of state is called:",
+  options: ["Evaporation", "Condensation", "Melting", "Freezing"],
+  correctIndex: 2,
+  explain: "Melting is when a solid changes into a liquid as it warms up." },
+
+{ topic: 'materials',
+  text: "Water in a puddle disappears on a sunny day. This is because:",
+  options: ["The Sun drinks it", "The water evaporates into water vapour", "It freezes", "It turns into ice"],
+  correctIndex: 1,
+  explain: "Heat from the Sun gives water particles enough energy to escape as a gas (water vapour) — this is evaporation." },
+
+{ topic: 'materials',
+  text: "Water droplets form on the outside of a cold glass on a warm day. This is called:",
+  options: ["Melting", "Boiling", "Condensation", "Evaporation"],
+  correctIndex: 2,
+  explain: "Water vapour in the warm air touches the cold glass and turns back into liquid water — that's condensation." },
+
+{ topic: 'materials',
+  text: "At what temperature does pure water freeze?",
+  options: ["100°C", "50°C", "0°C", "-100°C"],
+  correctIndex: 2,
+  explain: "Water freezes at 0°C (and boils at 100°C) at normal air pressure." },
+
+{ topic: 'materials',
+  text: "At what temperature does pure water boil?",
+  options: ["0°C", "50°C", "100°C", "200°C"],
+  correctIndex: 2,
+  explain: "Pure water boils at 100°C at normal air pressure." },
+
+{ topic: 'materials',
+  text: "In the water cycle, water rises into the sky as a gas. What is this stage called?",
+  options: ["Precipitation", "Evaporation", "Condensation", "Collection"],
+  correctIndex: 1,
+  explain: "Heat from the Sun causes water in oceans and rivers to evaporate (turn into water vapour) and rise into the sky." },
+
+{ topic: 'materials',
+  text: "Which of these is NOT a stage of the water cycle?",
+  options: ["Evaporation", "Condensation", "Digestion", "Precipitation"],
+  correctIndex: 2,
+  explain: "Digestion is part of the body's processes, not the water cycle. Evaporation, condensation, precipitation and collection are the cycle's stages." },
+
+{ topic: 'materials',
+  text: "Rain is an example of:",
+  options: ["Evaporation", "Precipitation", "Condensation", "Reflection"],
+  correctIndex: 1,
+  explain: "When water droplets in clouds get too heavy, they fall as rain, snow, sleet or hail — this is precipitation." },
+
+{ topic: 'materials',
+  text: "Which material is a good thermal insulator (keeps heat in)?",
+  options: ["Metal", "Wool", "Glass", "Stone"],
+  correctIndex: 1,
+  explain: "Wool traps lots of air, which slows heat from escaping. Metals, glass and stone all let heat through more easily." },
+
+{ topic: 'materials',
+  text: "Which property is most important for a material used to make a window?",
+  options: ["It must be flexible", "It must be transparent", "It must be magnetic", "It must dissolve in water"],
+  correctIndex: 1,
+  explain: "Windows let us see through them — so transparency is the key property." },
+
+{ topic: 'materials',
+  text: "Rocks made from layers of sand and bits of dead plants and animals pressed together are called:",
+  options: ["Igneous rocks", "Sedimentary rocks", "Metamorphic rocks", "Plastic rocks"],
+  correctIndex: 1,
+  explain: "Sedimentary rocks form when layers of sediment build up over many years and harden. Sandstone and limestone are sedimentary." },
+
+{ topic: 'materials',
+  text: "Fossils are most often found in which kind of rock?",
+  options: ["Igneous", "Sedimentary", "Metamorphic", "Soil"],
+  correctIndex: 1,
+  explain: "Sedimentary rocks form gently in layers, so the remains of plants and animals can be preserved as fossils." },
+
+{ topic: 'materials',
+  text: "Soil is made from:",
+  options: ["Only water", "Tiny pieces of rock and decayed living things", "Plastic and metal", "Cloud particles"],
+  correctIndex: 1,
+  explain: "Soil is a mix of small rock particles, decayed plants and animals (humus), water and air." },
+
+{ topic: 'materials',
+  text: "A scientist heats butter on a hob. The butter goes from a solid to a liquid. This change is called:",
+  options: ["Freezing", "Melting", "Evaporating", "Condensing"],
+  correctIndex: 1,
+  explain: "Solid to liquid is melting. Heat gives the particles energy to move out of their fixed positions." },
+
+{ topic: 'materials',
+  text: "Look at this table of substances and their melting points:\n• Iron — 1538°C\n• Aluminium — 660°C\n• Ice — 0°C\n• Chocolate — 35°C\n\nWhich substance would melt fastest in your warm hand?",
+  options: ["Iron", "Aluminium", "Ice", "Chocolate"],
+  correctIndex: 3,
+  explain: "Chocolate melts at 35°C — close to body temperature (37°C) — so it melts in your hand. Ice melts at 0°C but more slowly because more heat is needed to change all of it." },
+
+{ topic: 'materials',
+  text: "When wet washing dries on a line, the water:",
+  options: ["Disappears completely", "Evaporates into the air as water vapour", "Turns into ice", "Sinks into the ground"],
+  correctIndex: 1,
+  explain: "Water in the clothes turns from liquid to gas (evaporates) and joins the air. Wind and warmth speed it up." },
+
+{ topic: 'materials',
+  text: "Why is it easier to compress (squash) a gas than a liquid or solid?",
+  options: ["Gas particles are bigger", "Gas particles are far apart so there is space to push them closer", "Gases have more weight", "Gases are colder"],
+  correctIndex: 1,
+  explain: "In a gas, particles are spread far apart with lots of empty space, so they can be pushed closer together." },
+
+{ topic: 'materials',
+  text: "Sand is poured into a glass. It takes the shape of the glass. Is sand a liquid?",
+  options: ["Yes, because it flows", "No, because each grain is a tiny solid", "Yes, because it has no shape", "No, because it is wet"],
+  correctIndex: 1,
+  explain: "Sand looks like it flows, but each grain is a tiny solid that keeps its own shape. Sand is a solid made of many small pieces." },
+
+{ topic: 'materials',
+  text: "Which property would make a material a poor choice for a saucepan?",
+  options: ["Heatproof", "Strong", "Melts at low temperatures", "Easy to hold"],
+  correctIndex: 2,
+  explain: "A saucepan needs to stay solid when heated. A material with a low melting point would melt on the hob — useless!" },
+
+{ topic: 'materials',
+  text: "Steam coming out of a kettle cools and turns into water droplets on the cold window. The change steam → water is:",
+  options: ["Evaporation", "Condensation", "Freezing", "Melting"],
+  correctIndex: 1,
+  explain: "Going from gas (steam) back to liquid (water) is condensation. The cold window takes energy from the steam." },
+
+
+// ────────────────────────────────────────────────────────────────────────────
+//  GROUP 4 — Forces, sound, light & electricity  (24 questions)
+// ────────────────────────────────────────────────────────────────────────────
+
+{ topic: 'physics',
+  text: "Which of these objects would a magnet attract?",
+  options: ["A plastic ruler", "A wooden pencil", "An iron nail", "A glass cup"],
+  correctIndex: 2,
+  explain: "Magnets attract magnetic materials — iron, nickel and cobalt. Plastic, wood and glass are not magnetic." },
+
+{ topic: 'physics',
+  text: "If you put two north poles of magnets together, they will:",
+  options: ["Attract each other", "Repel (push away)", "Stick together forever", "Get very cold"],
+  correctIndex: 1,
+  explain: "Like poles repel (N-N or S-S push apart), unlike poles attract (N-S pull together)." },
+
+{ topic: 'physics',
+  text: "Which is NOT a force?",
+  options: ["A push", "A pull", "Gravity", "Sunlight"],
+  correctIndex: 3,
+  explain: "Forces push or pull. Gravity, friction, magnetism, pushes and pulls are all forces. Sunlight is light, not a force." },
+
+{ topic: 'physics',
+  text: "Friction is a force that:",
+  options: ["Helps things move easily", "Slows things down when surfaces rub together", "Pulls objects to the ground", "Makes magnets stronger"],
+  correctIndex: 1,
+  explain: "Friction acts between surfaces to slow movement. Smoother surfaces have less friction; rougher surfaces have more." },
+
+{ topic: 'physics',
+  text: "On which surface would a toy car roll the FASTEST?",
+  options: ["A carpet", "Sandpaper", "A smooth wooden floor", "Grass"],
+  correctIndex: 2,
+  explain: "Smooth surfaces have less friction, so the car rolls more easily. Carpet, sandpaper and grass all create more friction." },
+
+{ topic: 'physics',
+  text: "Light travels in:",
+  options: ["Wavy circles", "Straight lines", "Zigzags", "Squares"],
+  correctIndex: 1,
+  explain: "Light travels in straight lines. We see objects when light from them travels in a straight line into our eyes." },
+
+{ topic: 'physics',
+  text: "A shadow is formed when:",
+  options: ["Light passes through an object", "Light is blocked by an object", "Light disappears", "An object glows"],
+  correctIndex: 1,
+  explain: "A shadow is the dark area behind an object that blocks the light. The object stops the light reaching the surface behind it." },
+
+{ topic: 'physics',
+  text: "If you move a torch closer to an object, the shadow on the wall behind it will:",
+  options: ["Get smaller", "Get bigger", "Disappear", "Turn red"],
+  correctIndex: 1,
+  explain: "Moving the light source closer makes the shadow LARGER, because the light spreads more around the object." },
+
+{ topic: 'physics',
+  text: "Which of these is NOT a source of light?",
+  options: ["The Sun", "A torch", "A candle flame", "The Moon"],
+  correctIndex: 3,
+  explain: "The Moon doesn't make its own light — it reflects sunlight. The Sun, torches and flames are all light sources." },
+
+{ topic: 'physics',
+  text: "Sound is made when objects:",
+  options: ["Get cold", "Vibrate (shake quickly)", "Stop moving", "Float in water"],
+  correctIndex: 1,
+  explain: "All sounds come from vibrations. A guitar string, a drum skin, our vocal cords — they all vibrate to make sound." },
+
+{ topic: 'physics',
+  text: "Which travels faster — sound or light?",
+  options: ["Sound", "Light", "They travel at the same speed", "Neither, they don't move"],
+  correctIndex: 1,
+  explain: "Light travels MUCH faster than sound. That's why you see lightning before you hear thunder." },
+
+{ topic: 'physics',
+  text: "If you tap a drum harder, the sound becomes:",
+  options: ["Quieter", "Louder", "Higher pitched", "Slower"],
+  correctIndex: 1,
+  explain: "Bigger vibrations make louder sounds. Tapping harder = bigger vibrations on the drum skin." },
+
+{ topic: 'physics',
+  text: "A guitar string vibrates very quickly (high frequency). The sound will be:",
+  options: ["Low pitched", "High pitched", "Silent", "Slower"],
+  correctIndex: 1,
+  explain: "Fast vibrations = high pitch (a high note). Slow vibrations = low pitch (a low note)." },
+
+{ topic: 'physics',
+  text: "Sound CANNOT travel through:",
+  options: ["Air", "Water", "Wood", "A vacuum (empty space)"],
+  correctIndex: 3,
+  explain: "Sound needs particles (a medium) to travel through. In space — a vacuum — there are no particles, so no sound." },
+
+{ topic: 'physics',
+  text: "If you stand further away from a speaker, the sound you hear gets:",
+  options: ["Louder", "Quieter", "Higher pitched", "Faster"],
+  correctIndex: 1,
+  explain: "As sound travels through the air, its energy spreads out, so it gets quieter the further you are." },
+
+{ topic: 'physics',
+  text: "In a simple electrical circuit, what is needed to make the bulb light up?",
+  options: ["A complete loop including a power source, wires and the bulb", "Just a wire", "Just a battery", "An empty box"],
+  correctIndex: 0,
+  explain: "Electricity only flows when there's a complete loop — battery → wire → bulb → wire → back to battery. Any break stops the flow." },
+
+{ topic: 'physics',
+  text: "Which of these is a conductor of electricity?",
+  options: ["Plastic", "Glass", "Copper wire", "Wood"],
+  correctIndex: 2,
+  explain: "Metals like copper conduct electricity. Plastic, glass and wood are insulators — they don't let electricity flow." },
+
+{ topic: 'physics',
+  text: "Which of these is an insulator (does NOT conduct electricity)?",
+  options: ["Steel", "Aluminium", "Plastic", "Iron"],
+  correctIndex: 2,
+  explain: "Plastic stops electricity flowing — that's why electrical wires are wrapped in plastic for safety." },
+
+{ topic: 'physics',
+  text: "In a series circuit with one battery and two bulbs, what happens to the second bulb if the first is unscrewed?",
+  options: ["It glows brighter", "It still works", "It goes out, because the circuit is broken", "It changes colour"],
+  correctIndex: 2,
+  explain: "Series circuits are a single loop. Removing any component breaks the loop and stops the flow of electricity to all parts." },
+
+{ topic: 'physics',
+  text: "If you add an EXTRA battery to a simple circuit (the right way round), the bulb will:",
+  options: ["Get dimmer", "Get brighter", "Switch off", "Change colour"],
+  correctIndex: 1,
+  explain: "More batteries = more energy in the circuit, so the bulb glows more brightly (within limits)." },
+
+{ topic: 'physics',
+  text: "Which symbol below would be used to draw a switch in a circuit diagram?",
+  options: ["A long and short line (battery)", "A circle with a cross (bulb)", "A line with a gap that can close (switch)", "A wavy line (wire)"],
+  correctIndex: 2,
+  explain: "A switch in a circuit diagram is shown as a line with a gap — when the gap closes, current can flow." },
+
+{ topic: 'physics',
+  text: "Why is mains electricity dangerous?",
+  options: ["It can give a fatal electric shock", "It is too quiet to hear", "It only works in summer", "It has too many colours"],
+  correctIndex: 0,
+  explain: "Mains electricity carries a high voltage. Touching it can cause severe shocks or death. Always treat it with respect." },
+
+{ topic: 'physics',
+  text: "Gravity is the force that:",
+  options: ["Pushes objects up into the sky", "Pulls objects towards the centre of the Earth", "Makes magnets work", "Slows down sound"],
+  correctIndex: 1,
+  explain: "Gravity is a force of attraction. On Earth, it pulls everything toward the planet's centre — that's why things fall down." },
+
+{ topic: 'physics',
+  text: "Two children stand 30 metres apart. One bangs a metal pole. The other:",
+  options: ["Sees the bang and hears it at exactly the same time", "Sees the bang first, then hears it a moment later", "Hears the bang before seeing it", "Doesn't see or hear anything"],
+  correctIndex: 1,
+  explain: "Light travels almost instantly, but sound is much slower (~340 m/s). So you see the action first, then hear it a tiny moment later." },
+
+
+// ────────────────────────────────────────────────────────────────────────────
+//  GROUP 5 — Working scientifically (24 questions)
+// ────────────────────────────────────────────────────────────────────────────
+
+{ topic: 'working',
+  text: "A 'fair test' means:",
+  options: ["Everyone tries it once", "Only one thing is changed at a time, and everything else is kept the same", "Nobody cheats", "The teacher chooses the answer"],
+  correctIndex: 1,
+  explain: "In a fair test, you change ONE variable, measure another, and keep all others the same. That way you can be sure what caused any change." },
+
+{ topic: 'working',
+  text: "Asha is testing how toy cars roll down a slope. To make her test fair, she should:",
+  options: ["Use a different ramp each time", "Use the same ramp and let go from the same place every time", "Push some cars and not others", "Stop timing whenever she likes"],
+  correctIndex: 1,
+  explain: "Same ramp, same starting point = a fair comparison. Only the surface or the car should change, depending on what she's testing." },
+
+{ topic: 'working',
+  text: "What is a 'prediction' in science?",
+  options: ["A guess about what will happen, often based on what you already know", "The result you get at the end", "A list of equipment", "A drawing of the experiment"],
+  correctIndex: 0,
+  explain: "A prediction says what you THINK will happen and why, before testing it. Then you test to find out if you were right." },
+
+{ topic: 'working',
+  text: "Which is the BEST way to record results from a science investigation?",
+  options: ["Write them on the back of your hand", "Use a clear table with labelled columns", "Try to remember everything", "Tell a friend"],
+  correctIndex: 1,
+  explain: "A clear table makes it easy to see patterns, compare results, and report findings accurately." },
+
+{ topic: 'working',
+  text: "Look at this table:\nMaterial — How long it took to cool from 80°C to 50°C\n• Wood — 12 minutes\n• Plastic — 9 minutes\n• Metal — 3 minutes\n• Wool — 18 minutes\n\nWhich material is the BEST insulator?",
+  options: ["Metal", "Plastic", "Wood", "Wool"],
+  correctIndex: 3,
+  explain: "The best insulator keeps heat in the longest. Wool took the longest to cool (18 minutes), so it kept heat best." },
+
+{ topic: 'working',
+  text: "Look at this table:\nMaterial — How long it took to cool from 80°C to 50°C\n• Wood — 12 minutes\n• Plastic — 9 minutes\n• Metal — 3 minutes\n• Wool — 18 minutes\n\nWhich material lost heat the fastest?",
+  options: ["Wool", "Wood", "Metal", "Plastic"],
+  correctIndex: 2,
+  explain: "Metal cooled in just 3 minutes — the fastest. Metals are good conductors, so heat escapes quickly." },
+
+{ topic: 'working',
+  text: "Tom wants to find out which paper towel soaks up the most water. Which is the BEST measurement to take?",
+  options: ["The colour of the towel", "The mass of water absorbed in grams", "How nice the towel feels", "The brand name"],
+  correctIndex: 1,
+  explain: "To compare absorbency fairly, you need a number — measuring how much water is held (in grams or millilitres) gives clear, comparable results." },
+
+{ topic: 'working',
+  text: "Which is a good question to investigate scientifically?",
+  options: ["Is the colour blue prettier than red?", "Does temperature affect how fast salt dissolves in water?", "Which cake tastes best?", "What is the most exciting day?"],
+  correctIndex: 1,
+  explain: "Good scientific questions can be tested by changing one thing and measuring another. Opinions about taste or beauty can't be tested this way." },
+
+{ topic: 'working',
+  text: "Why might a scientist repeat an experiment several times?",
+  options: ["To waste time", "To make the results more reliable and check for mistakes", "To use up equipment", "Because it looks fun"],
+  correctIndex: 1,
+  explain: "Repeating gives more confidence in the result. If you get the same answer multiple times, it's more reliable than a single test." },
+
+{ topic: 'working',
+  text: "An anomalous result is a result that:",
+  options: ["Doesn't fit the pattern of the others", "Is the smallest number", "Is always wrong", "Is always written in red"],
+  correctIndex: 0,
+  explain: "An anomaly stands out from the rest. It might be a measurement error and shouldn't usually be used in calculations." },
+
+{ topic: 'working',
+  text: "Look at this table of plant growth in different light:\n• Bright light — 12 cm\n• Some light — 8 cm\n• Dim light — 4 cm\n• No light — 1 cm\n\nWhat is the pattern?",
+  options: ["More light = less growth", "More light = more growth", "Light makes no difference", "Plants only grow in the dark"],
+  correctIndex: 1,
+  explain: "As light increases, growth increases. The pattern is clear — more light helps the plant grow more." },
+
+{ topic: 'working',
+  text: "Which equipment is best for measuring exactly 50 ml of water?",
+  options: ["A ruler", "A measuring cylinder", "A stopwatch", "A thermometer"],
+  correctIndex: 1,
+  explain: "Volumes of liquid are measured in millilitres or litres, using a measuring cylinder or jug. Rulers measure length, stopwatches measure time, thermometers measure temperature." },
+
+{ topic: 'working',
+  text: "Which equipment would you use to measure how hot something is?",
+  options: ["A measuring jug", "A thermometer", "A stopwatch", "A balance"],
+  correctIndex: 1,
+  explain: "Thermometers measure temperature in degrees Celsius (°C)." },
+
+{ topic: 'working',
+  text: "Sara investigates which bag carries the heaviest load before tearing. She tests bag A once, bag B three times, and bag C twice. Why is this NOT a fair test?",
+  options: ["She used different bags", "She tested each bag a different number of times", "She tested in the same room", "She used the same kind of weights"],
+  correctIndex: 1,
+  explain: "Each bag should be tested the same number of times so the comparison is fair. Otherwise some bags get more chances than others." },
+
+{ topic: 'working',
+  text: "A bar chart is best for showing:",
+  options: ["A picture of an animal", "How a measurement compares between groups", "Where the weather is hottest", "Which person is tallest in a queue"],
+  correctIndex: 1,
+  explain: "Bar charts compare quantities across groups (like classes, materials or days). The height of each bar shows the value." },
+
+{ topic: 'working',
+  text: "On a graph, the y-axis (vertical) usually shows:",
+  options: ["The thing being measured", "The thing being changed", "The colour of the experiment", "Names of the children"],
+  correctIndex: 0,
+  explain: "By convention, the variable being MEASURED goes on the y-axis (vertical), and the variable being CHANGED goes on the x-axis (horizontal)." },
+
+{ topic: 'working',
+  text: "Which of these is NOT a piece of safety advice for science?",
+  options: ["Wear safety goggles when needed", "Tie back long hair near flames", "Eat the materials to test them", "Tell a teacher about any spills"],
+  correctIndex: 2,
+  explain: "Never eat or taste materials in a science investigation — they could be dangerous." },
+
+{ topic: 'working',
+  text: "Three children measure the temperature of the same cup of water:\n• Alex: 22°C\n• Ben: 21°C\n• Cara: 95°C\n\nWhose result is most likely an error?",
+  options: ["Alex", "Ben", "Cara", "All three"],
+  correctIndex: 2,
+  explain: "Cara's reading is very different from the others (an anomaly). She probably misread the thermometer or the water was different." },
+
+{ topic: 'working',
+  text: "If you carry out the same experiment again and get the same result, the result is:",
+  options: ["A coincidence", "Reliable", "Wrong", "Unfair"],
+  correctIndex: 1,
+  explain: "Repeating an experiment and getting similar results means your findings are reliable — they can be trusted." },
+
+{ topic: 'working',
+  text: "Which is the BEST conclusion from this data?\n• Sugar dissolves in water at 10°C in 5 minutes\n• Sugar dissolves in water at 30°C in 3 minutes\n• Sugar dissolves in water at 60°C in 1 minute",
+  options: ["Sugar doesn't dissolve in water", "The hotter the water, the faster sugar dissolves", "Sugar dissolves slower in hot water", "Temperature has no effect"],
+  correctIndex: 1,
+  explain: "As temperature rises, dissolving time falls. So hotter water = faster dissolving. That's the pattern in the data." },
+
+{ topic: 'working',
+  text: "When you observe something carefully, you should record:",
+  options: ["Only what you wanted to see", "What you actually see, even if it surprises you", "What your friend says", "Nothing"],
+  correctIndex: 1,
+  explain: "Honest scientific observation means writing down what you actually see, not what you hoped to see. Surprises often lead to discoveries!" },
+
+{ topic: 'working',
+  text: "Which sentence describes a 'variable' in an investigation?",
+  options: ["Something that can change or be measured", "A piece of safety equipment", "A type of plant", "A unit of time"],
+  correctIndex: 0,
+  explain: "A variable is anything that can vary — temperature, time, mass, length. Investigations change one variable, measure another, keep others the same." },
+
+{ topic: 'working',
+  text: "Which is the BEST way to make sure measurements are accurate?",
+  options: ["Guess them", "Use suitable equipment and read carefully", "Ask someone to make them up", "Use any unit you like"],
+  correctIndex: 1,
+  explain: "Using the right equipment (e.g. ruler, thermometer, scales) and reading it carefully — at eye level for liquids, for example — gives accurate results." },
+
+{ topic: 'working',
+  text: "What does the word 'evidence' mean in science?",
+  options: ["A funny story", "Information collected from observations or measurements", "An old rock", "A friend's opinion"],
+  correctIndex: 1,
+  explain: "Evidence is the data and observations you collect, which support or contradict your prediction." }
+
+];
+
+
+
+/* ============================================================
+   SCIENCE QUESTION GENERATOR
+   ============================================================ */
+function generateScienceQuestions() {
+  const total = QUIZ_LENGTHS.science;
+
+  // Apply topic filtering
+  const activeIds = getActiveTopicIds('science');
+  let pool = sciencePool;
+  if (activeIds && activeIds.size > 0) {
+    pool = sciencePool.filter(q => activeIds.has(q.topic));
+  }
+  if (pool.length === 0) pool = [...sciencePool]; // safety fallback
+
+  // Shuffle and pick the first `total` questions; if pool is smaller, just use what we have
+  const shuffled = shuffle([...pool]);
+  const picks = shuffled.slice(0, Math.min(total, shuffled.length));
+
+  // Annotate each question with the human-readable topic label and a kind marker
+  return picks.map(q => {
+    const topicDef = SUBJECT_META.science.topics.find(t => t.id === q.topic);
+    return {
+      kind: 'mc',
+      topic: topicDef ? topicDef.label : q.topic,
+      text: q.text,
+      options: q.options,
+      correctIndex: q.correctIndex,
+      explain: q.explain,
+      hint: q.hint
+    };
+  });
+}
+
+
 /* ========================================================================= */
 /* =========================================================================
    PREP HUB — UI LOGIC (REDESIGN v3)
@@ -8380,12 +9453,13 @@ function generateReadingQuestions() {
 const TALLY_KEYS = {
   maths:   { c: 'prephub.maths.correct',   t: 'prephub.maths.attempted' },
   english: { c: 'prephub.english.correct', t: 'prephub.english.attempted' },
-  reading: { c: 'prephub.reading.correct', t: 'prephub.reading.attempted' }
+  reading: { c: 'prephub.reading.correct', t: 'prephub.reading.attempted' },
+  science: { c: 'prephub.science.correct', t: 'prephub.science.attempted' }
 };
 
 function loadTallies() {
   const out = {};
-  for (const sub of ['maths', 'english', 'reading']) {
+  for (const sub of ['maths', 'english', 'reading', 'science']) {
     out[sub] = {
       correct:   parseInt(localStorage.getItem(TALLY_KEYS[sub].c) || '0', 10),
       attempted: parseInt(localStorage.getItem(TALLY_KEYS[sub].t) || '0', 10)
@@ -8419,7 +9493,7 @@ function saveLastAttempt(subject, correct, attempted) {
 }
 
 function resetTallies() {
-  for (const sub of ['maths', 'english', 'reading']) {
+  for (const sub of ['maths', 'english', 'reading', 'science']) {
     localStorage.removeItem(TALLY_KEYS[sub].c);
     localStorage.removeItem(TALLY_KEYS[sub].t);
     localStorage.removeItem('prephub.' + sub + '.lastAttempt');
@@ -8429,7 +9503,7 @@ function resetTallies() {
 
 function refreshHomeTallies() {
   const tallies = loadTallies();
-  for (const sub of ['maths', 'english', 'reading']) {
+  for (const sub of ['maths', 'english', 'reading', 'science']) {
     const t = tallies[sub];
     const numEl = document.getElementById('home-tally-num-' + sub);
     const barEl = document.getElementById('home-tally-bar-' + sub);
@@ -8603,6 +9677,30 @@ const SUBJECT_META = {
       { id: 'thinking',      label: 'Critical thinking',       topicIds: ['fact-opinion', 'audience'] },
       { id: 'genres',        label: 'Genres & text types',     topicIds: ['poetry', 'fables', 'non-fiction', 'persuasive', 'instructional', 'character', 'mystery', 'diary-letters', 'news'] }
     ]
+  },
+  science: {
+    label: 'Science',
+    badge: 'GL PTS',
+    description: "Living things, materials, forces and electricity. The right answer often comes from picturing what's happening.",
+    coveredSummary: '',
+    duration: '~25 min',
+    questionCount: 16,
+    color: '#5E3FBE',
+    tip: "When you read a science question, picture what's happening — sometimes drawing a quick mental sketch makes the answer obvious.",
+    // Science topics filter on q.topic equality (no keyword/passage matching needed)
+    topics: [
+      { id: 'living-things',   label: 'Living things & habitats',   match: { type: 'science-topic' } },
+      { id: 'animals-humans',  label: 'Animals including humans',   match: { type: 'science-topic' } },
+      { id: 'materials',       label: 'Materials & states of matter', match: { type: 'science-topic' } },
+      { id: 'physics',         label: 'Forces, sound, light & electricity', match: { type: 'science-topic' } },
+      { id: 'working',         label: 'Working scientifically',     match: { type: 'science-topic' } }
+    ],
+    topicGroups: [
+      { id: 'biology',     label: 'Living things & humans',          topicIds: ['living-things', 'animals-humans'] },
+      { id: 'chemistry',   label: 'Materials & states of matter',    topicIds: ['materials'] },
+      { id: 'physics-grp', label: 'Forces, sound, light & electricity', topicIds: ['physics'] },
+      { id: 'skills',      label: 'Working scientifically',          topicIds: ['working'] }
+    ]
   }
 };
 
@@ -8628,11 +9726,148 @@ const SUBJECT_META = {
     SUBJECT_META.reading.bankSize = qCount;
     SUBJECT_META.reading.bankNote = `${qCount} questions across ${readingPool.length} passages`;
   }
+  // Science: count per-topic and total
+  if (typeof sciencePool !== 'undefined') {
+    SUBJECT_META.science.bankSize = sciencePool.length;
+    SUBJECT_META.science.bankNote = `${sciencePool.length} questions across ${SUBJECT_META.science.topics.length} topic groups`;
+    // Per-topic count for the filter UI
+    for (const t of SUBJECT_META.science.topics) {
+      t.count = sciencePool.filter(q => q.topic === t.id).length;
+    }
+  }
   // Build the covered summary lines
   SUBJECT_META.maths.coveredSummary   = `${SUBJECT_META.maths.topics.length} topics — calculation, fractions, shapes, time and more.`;
   SUBJECT_META.english.coveredSummary = `${SUBJECT_META.english.topics.length} skills — cloze, grammar, vocabulary and beyond.`;
   SUBJECT_META.reading.coveredSummary = `${SUBJECT_META.reading.topics.length} skills — inference, summarising, fact vs opinion and more.`;
+  SUBJECT_META.science.coveredSummary = `${SUBJECT_META.science.topics.length} topics — biology, chemistry, physics and working scientifically.`;
 })();
+
+/* ============================================================
+   AUDIO PLAYBACK FOR READING PASSAGES
+   ============================================================ */
+
+// Manifest: { passageHash: filename } — populated at build time by extract_passages_v2.js
+const AUDIO_MANIFEST = {"589f7418189b8":"audio/passage-589f7418189b8.mp3","1838c7d30be014":"audio/passage-1838c7d30be014.mp3","111c2b909d865f":"audio/passage-111c2b909d865f.mp3","1fc96520d6a5c5":"audio/passage-1fc96520d6a5c5.mp3","1fbba252753dfb":"audio/passage-1fbba252753dfb.mp3","163b74fe43d901":"audio/passage-163b74fe43d901.mp3","186f4d7b72f0c2":"audio/passage-186f4d7b72f0c2.mp3","127b1c79163ea2":"audio/passage-127b1c79163ea2.mp3","1aed5a6bb6b9d6":"audio/passage-1aed5a6bb6b9d6.mp3","faef99a126c48":"audio/passage-faef99a126c48.mp3","e831e2d607690":"audio/passage-e831e2d607690.mp3","dbaea3d24a6f9":"audio/passage-dbaea3d24a6f9.mp3","49a29f42fef04":"audio/passage-49a29f42fef04.mp3","e31515aff742b":"audio/passage-e31515aff742b.mp3","43c6aa884152e":"audio/passage-43c6aa884152e.mp3","1d64e079ba9d85":"audio/passage-1d64e079ba9d85.mp3","38e55be8f3efe":"audio/passage-38e55be8f3efe.mp3","68bbc29de9353":"audio/passage-68bbc29de9353.mp3","e5e90c3352248":"audio/passage-e5e90c3352248.mp3","177450f7301f27":"audio/passage-177450f7301f27.mp3","17021cbb0b7664":"audio/passage-17021cbb0b7664.mp3","1b4ecf9322287c":"audio/passage-1b4ecf9322287c.mp3","165e181e21cbde":"audio/passage-165e181e21cbde.mp3","6dec42655c3f8":"audio/passage-6dec42655c3f8.mp3","106fb6e2cbe6ef":"audio/passage-106fb6e2cbe6ef.mp3","239338cc6132a":"audio/passage-239338cc6132a.mp3","6fe382ce46c1d":"audio/passage-6fe382ce46c1d.mp3","58bcf7ce1e495":"audio/passage-58bcf7ce1e495.mp3","1cbeced3938523":"audio/passage-1cbeced3938523.mp3","17b9031cbb1fcc":"audio/passage-17b9031cbb1fcc.mp3","15f5cb9f149fa2":"audio/passage-15f5cb9f149fa2.mp3","50ff9aba19ebc":"audio/passage-50ff9aba19ebc.mp3","12179fa64faebb":"audio/passage-12179fa64faebb.mp3","6746536ae8401":"audio/passage-6746536ae8401.mp3","9e22298e78dac":"audio/passage-9e22298e78dac.mp3","1546696eb32a14":"audio/passage-1546696eb32a14.mp3","1dcca23ab26527":"audio/passage-1dcca23ab26527.mp3","1d7ffcd8dfaa06":"audio/passage-1d7ffcd8dfaa06.mp3","14706f763ca51":"audio/passage-14706f763ca51.mp3","160ee9766db218":"audio/passage-160ee9766db218.mp3","1d812961f53bc7":"audio/passage-1d812961f53bc7.mp3","f793ac8fce10a":"audio/passage-f793ac8fce10a.mp3","588a92c56d933":"audio/passage-588a92c56d933.mp3","1fc916c907a7c9":"audio/passage-1fc916c907a7c9.mp3","1c20cf8c9979e3":"audio/passage-1c20cf8c9979e3.mp3","12657e5f9b6b1c":"audio/passage-12657e5f9b6b1c.mp3","bff8fda0856b4":"audio/passage-bff8fda0856b4.mp3","f2dfcef23e0ba":"audio/passage-f2dfcef23e0ba.mp3","7980532697558":"audio/passage-7980532697558.mp3","5dad7ba9eedad":"audio/passage-5dad7ba9eedad.mp3","1d0da0a4182d3":"audio/passage-1d0da0a4182d3.mp3","12a35f715906e2":"audio/passage-12a35f715906e2.mp3","1684050a8f23dc":"audio/passage-1684050a8f23dc.mp3","129d765e19e1d6":"audio/passage-129d765e19e1d6.mp3","1b4f95aebba41f":"audio/passage-1b4f95aebba41f.mp3","bc1b52b0a03b1":"audio/passage-bc1b52b0a03b1.mp3","1603d24a65c7bd":"audio/passage-1603d24a65c7bd.mp3","1cea1d94ba195b":"audio/passage-1cea1d94ba195b.mp3","134995ec51ec8f":"audio/passage-134995ec51ec8f.mp3","2a584913543e9":"audio/passage-2a584913543e9.mp3","151470a9e70d96":"audio/passage-151470a9e70d96.mp3","41cf3fa530ef0":"audio/passage-41cf3fa530ef0.mp3","16bfb4d96c51bf":"audio/passage-16bfb4d96c51bf.mp3","1a61379b48ff1c":"audio/passage-1a61379b48ff1c.mp3","1e92e0b67d0c39":"audio/passage-1e92e0b67d0c39.mp3","15c14ad12dd4a9":"audio/passage-15c14ad12dd4a9.mp3","12ff0c3903be02":"audio/passage-12ff0c3903be02.mp3","17a35138dc5995":"audio/passage-17a35138dc5995.mp3","d21df405a8d98":"audio/passage-d21df405a8d98.mp3","e334a7ad7d272":"audio/passage-e334a7ad7d272.mp3","1948615882a519":"audio/passage-1948615882a519.mp3","199cfc1e28b8c2":"audio/passage-199cfc1e28b8c2.mp3","4aed9670f6fb8":"audio/passage-4aed9670f6fb8.mp3","d7dfa2b1b7ac4":"audio/passage-d7dfa2b1b7ac4.mp3","1a7fb0c0ae646c":"audio/passage-1a7fb0c0ae646c.mp3","b737f005b5975":"audio/passage-b737f005b5975.mp3","1029727e180f3d":"audio/passage-1029727e180f3d.mp3","13961ed89d8ede":"audio/passage-13961ed89d8ede.mp3","1d23ec9c1ff1c5":"audio/passage-1d23ec9c1ff1c5.mp3"};
+
+// cyrb53 — non-cryptographic hash, deterministic across Node and browser
+// (must match the implementation used to build the manifest)
+function audioHash(str) {
+  let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+  for (let i = 0, ch; i < str.length; i++) {
+    ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+  h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+  h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16).padStart(13, '0');
+}
+
+function getAudioFileForPassage(passageText) {
+  const id = audioHash(passageText);
+  return AUDIO_MANIFEST[id] || null;
+}
+
+// Single shared Audio element; only one passage plays at a time
+const passageAudio = {
+  el: null,
+  currentPath: null,
+  currentBtn: null,
+  init() {
+    if (!this.el) {
+      this.el = new Audio();
+      this.el.preload = 'none';
+      this.el.addEventListener('ended', () => this.handleStop());
+      this.el.addEventListener('pause', () => {
+        // 'pause' fires on natural stop too — only update UI if still loaded
+        if (this.el.currentTime < this.el.duration && !this.el.ended) this.handlePause();
+      });
+      this.el.addEventListener('error', () => this.handleError());
+    }
+  },
+  play(filepath, btn) {
+    this.init();
+    if (this.currentPath !== filepath) {
+      this.el.src = filepath;
+      this.currentPath = filepath;
+    }
+    this.currentBtn = btn;
+    setBtnState(btn, 'loading');
+    const playPromise = this.el.play();
+    if (playPromise && playPromise.then) {
+      playPromise.then(() => setBtnState(btn, 'playing'))
+                 .catch(() => setBtnState(btn, 'error'));
+    }
+  },
+  pause() {
+    if (this.el && !this.el.paused) this.el.pause();
+  },
+  handlePause() {
+    if (this.currentBtn) setBtnState(this.currentBtn, 'paused');
+  },
+  handleStop() {
+    if (this.currentBtn) setBtnState(this.currentBtn, 'paused');
+  },
+  handleError() {
+    if (this.currentBtn) setBtnState(this.currentBtn, 'error');
+  },
+  stopAndReset() {
+    if (this.el) {
+      this.el.pause();
+      this.el.removeAttribute('src');
+      this.el.load();
+    }
+    this.currentPath = null;
+    this.currentBtn = null;
+  }
+};
+
+const SVG_PLAY  = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+const SVG_PAUSE = '<svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
+const SVG_LOAD  = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="14 30"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="0.9s" repeatCount="indefinite"/></circle></svg>';
+
+function setBtnState(btn, state) {
+  if (!btn) return;
+  const icon = btn.querySelector('.passage-audio-icon');
+  const label = btn.querySelector('.passage-audio-label');
+  btn.dataset.state = state;
+  if (state === 'playing') {
+    if (icon) icon.innerHTML = '<span class="passage-audio-bars"><span></span><span></span><span></span><span></span></span>';
+    if (label) label.textContent = 'Playing';
+  } else if (state === 'paused') {
+    if (icon) icon.innerHTML = SVG_PLAY;
+    if (label) label.textContent = 'Listen';
+  } else if (state === 'loading') {
+    if (icon) icon.innerHTML = SVG_LOAD;
+    if (label) label.textContent = 'Loading';
+  } else if (state === 'error') {
+    if (icon) icon.innerHTML = SVG_PLAY;
+    if (label) label.textContent = 'Audio unavailable';
+    btn.disabled = true;
+  } else {
+    if (icon) icon.innerHTML = SVG_PLAY;
+    if (label) label.textContent = 'Listen';
+  }
+}
+
+function handlePassageAudioClick(btn) {
+  const filepath = btn.dataset.audioPath;
+  if (!filepath) return;
+  // If this button is currently playing, pause
+  if (passageAudio.currentBtn === btn && passageAudio.el && !passageAudio.el.paused) {
+    passageAudio.pause();
+    return;
+  }
+  // If a different button was playing, stop that one's UI
+  if (passageAudio.currentBtn && passageAudio.currentBtn !== btn) {
+    setBtnState(passageAudio.currentBtn, 'paused');
+  }
+  passageAudio.play(filepath, btn);
+}
+
+
 
 /* ---------- topic filter mapping ---------- */
 // Match a single grammar Q against an English topic
@@ -8758,16 +9993,25 @@ function subjectGlyph(subject) {
   if (subject === 'maths')   return '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5v14"/></svg>';
   if (subject === 'english') return '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4l6 6-10 10H4v-6z"/><path d="M13 5l6 6"/></svg>';
   if (subject === 'reading') return '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>';
+  if (subject === 'science') return '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="2" fill="white"/><ellipse cx="12" cy="12" rx="9" ry="3.5"/><ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(-60 12 12)"/></svg>';
   return '';
 }
 
 /* ---------- view switching ---------- */
 function showView(viewId) {
   if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
+  // Always hide the verdict bar when switching views (it's only for quiz post-check state)
+  if (viewId !== 'quiz') {
+    const bar = document.getElementById('verdict-bar');
+    if (bar) bar.classList.remove('show');
+    document.body.classList.remove('has-verdict');
+    // Stop any reading-passage audio when leaving the quiz
+    if (typeof passageAudio !== 'undefined') passageAudio.stopAndReset();
+  }
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + viewId).classList.add('active');
   // Manage body tint based on view
-  document.body.classList.remove('tint-maths', 'tint-english', 'tint-reading');
+  document.body.classList.remove('tint-maths', 'tint-english', 'tint-reading', 'tint-science');
   if (state.subjectDisplay && (viewId === 'subject' || viewId === 'quiz' || viewId === 'results' || viewId === 'review')) {
     document.body.classList.add('tint-' + state.subjectDisplay);
   }
@@ -8863,7 +10107,7 @@ function renderSubjectPage(subject) {
                 const totalGroupItems = topicsInGroup.reduce((s, t) => s + t.count, 0);
                 if (topicsInGroup.length === 0) return '';
                 return `
-                <div class="topic-group" data-group-id="${g.id}">
+                <div class="topic-group open" data-group-id="${g.id}">
                   <button class="topic-group-header" data-action="toggle-open">
                     <span class="group-check" data-action="toggle-all">
                       <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
@@ -9083,6 +10327,7 @@ function beginQuiz(subjectDisplay) {
   // Generate questions from existing pools
   if (poolKey === 'math')    state.questions = generateMathQuestions();
   else if (poolKey === 'english') state.questions = generateEnglishQuestions();
+  else if (poolKey === 'science') state.questions = generateScienceQuestions();
   else                       state.questions = generateReadingQuestions();
   state.currentIndex = 0;
   state.score = 0;
@@ -9110,9 +10355,22 @@ function renderQuiz() {
       <div class="q-text">${escapeHTML(q.text)}</div>
     `;
   } else if (q.kind === 'passage') {
+    const audioPath = getAudioFileForPassage(q.passage);
+    const audioToolbar = audioPath ? `
+      <div class="passage-audio">
+        <button class="passage-audio-btn" data-audio-path="${audioPath}">
+          <span class="passage-audio-icon">${SVG_PLAY}</span>
+          <span class="passage-audio-label">Listen</span>
+        </button>
+        <span class="passage-audio-status">Read along while you listen</span>
+      </div>
+    ` : '';
     qBody = `
       <div class="q-topic">${escapeHTML(q.topic || meta.label + ' · Reading')}</div>
-      <div class="q-read-passage">${escapeHTML(q.passage)}</div>
+      <div class="q-read-passage">
+        ${audioToolbar}
+        <div>${escapeHTML(q.passage)}</div>
+      </div>
       <div class="q-text">${escapeHTML(q.text)}</div>
     `;
   } else {
@@ -9163,8 +10421,6 @@ function renderQuiz() {
         <div class="hint-content" id="hint-content">${escapeHTML(q.hint || '')}</div>
       </div>
 
-      <div class="feedback" id="feedback"></div>
-
       <div class="quiz-bottom">
         <span class="enter-hint" id="enter-hint">Pick an answer to check</span>
         <button class="next-btn ${subject}" id="next-btn" disabled data-mode="check">
@@ -9179,6 +10435,15 @@ function renderQuiz() {
   view.querySelectorAll('.option').forEach(btn => {
     btn.addEventListener('click', () => selectOption(parseInt(btn.dataset.index, 10)));
   });
+
+  // Wire passage audio button (only present on reading questions)
+  view.querySelectorAll('.passage-audio-btn').forEach(btn => {
+    btn.addEventListener('click', () => handlePassageAudioClick(btn));
+  });
+
+  // Always stop any prior audio when re-rendering (new question = no leftover playback)
+  passageAudio.stopAndReset();
+
   document.getElementById('hint-toggle').addEventListener('click', toggleHint);
   document.getElementById('next-btn').addEventListener('click', () => {
     const nb = document.getElementById('next-btn');
@@ -9386,25 +10651,14 @@ function checkAnswer() {
     }
   });
 
-  // Build feedback panel: banner + explanation body
-  const feedback = document.getElementById('feedback');
-  if (feedback) {
-    const bannerClass = correct ? 'correct' : 'incorrect';
-    const bannerText = correct ? "That's right." : "Not quite.";
-    const bannerIcon = correct
-      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
-      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-    feedback.innerHTML = `
-      <div class="feedback-banner ${bannerClass}">
-        <span class="feedback-banner-icon">${bannerIcon}</span>
-        <span>${bannerText}</span>
-      </div>
-      ${q.explain ? `<div class="feedback-body">${q.explain}</div>` : ''}
-    `;
-    feedback.classList.add('show');
-  }
+  // Populate the verdict bar
+  showVerdictBar({
+    correct,
+    explain: q.explain || '',
+    isLast: state.currentIndex + 1 === state.questions.length
+  });
 
-  // Switch the button: Check → Next/Finish
+  // Hide the inline next button row (verdict bar replaces it)
   const nb = document.getElementById('next-btn');
   if (nb) {
     nb.dataset.mode = 'next';
@@ -9419,7 +10673,44 @@ function checkAnswer() {
   if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
 }
 
+function showVerdictBar({ correct, explain, isLast }) {
+  const subject = state.subjectDisplay;
+  const bar = document.getElementById('verdict-bar');
+  const icon = document.getElementById('verdict-icon');
+  const headline = document.getElementById('verdict-headline');
+  const explainEl = document.getElementById('verdict-explain');
+  const continueBtn = document.getElementById('verdict-continue');
+  const continueLabel = document.getElementById('verdict-continue-label');
+
+  if (!bar) return;
+
+  bar.classList.remove('correct', 'incorrect');
+  bar.classList.add(correct ? 'correct' : 'incorrect');
+
+  icon.innerHTML = correct
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+
+  headline.textContent = correct ? 'Correct' : 'Not quite';
+  explainEl.innerHTML = explain || (correct ? "Nicely done." : "Have another look at the explanation when you review.");
+
+  // Subject-coloured continue button
+  continueBtn.classList.remove('maths', 'english', 'reading');
+  continueBtn.classList.add(subject);
+  if (continueLabel) continueLabel.textContent = isLast ? 'See results' : 'Continue';
+
+  bar.classList.add('show');
+  document.body.classList.add('has-verdict');
+}
+
+function hideVerdictBar() {
+  const bar = document.getElementById('verdict-bar');
+  if (bar) bar.classList.remove('show');
+  document.body.classList.remove('has-verdict');
+}
+
 function nextQuestion() {
+  hideVerdictBar();
   state.currentIndex++;
   if (state.currentIndex >= state.questions.length) {
     finishQuiz();
@@ -9661,6 +10952,9 @@ document.getElementById('reset-tallies-btn').addEventListener('click', () => {
     resetTallies();
   }
 });
+
+// Wire the verdict bar Continue button once
+document.getElementById('verdict-continue').addEventListener('click', () => nextQuestion());
 
 // Expose for old-style onclick
 window.showView = showView;
